@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:e2e",
+      "exitCode": 0,
+      "status": "PASS"
+    }
+  ]
+}

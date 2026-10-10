@@ -1,0 +1,1001 @@
+PORTER CONNECTED FRONTEND BUILD TASKS
+===================================
+
+PROJECT ROOT:
+C:\Users\patel\Desktop\Porter
+
+SOURCE DOCUMENTS:
+- prd.pdf
+- Porter idea.pdf
+- price.pdf
+- risks.pdf
+
+PROGRESS REPORT FOLDER:
+C:\Users\patel\Desktop\Porter\docs\progress
+
+PRIMARY GOAL
+------------
+Build a complete, polished, frontend-only Porter MVP prototype with:
+1. Customer frontend
+2. Driver frontend
+3. Admin frontend
+4. Shared connected demo state so actions in one role can affect the others without a real backend
+
+This is a prototype phase only:
+- no real backend
+- no real database
+- no real payment provider
+- no real maps provider
+- no real SMS/push provider
+- no real authentication service
+
+Use local code, shared mock data, localStorage/IndexedDB where appropriate, and a shared frontend state layer so the prototype behaves like one connected marketplace.
+
+IMPORTANT OPERATING RULES
+-------------------------
+1. Read the four source documents once at the beginning for requirements only.
+2. Do NOT dump or print the full PDF contents into the terminal.
+3. Do NOT create planning documents unless a task explicitly asks for one.
+4. Work through the tasks below in order.
+5. Complete ONE task fully before moving to the next.
+6. Do not stop after scaffolding or empty folders.
+7. Do not create placeholder-only pages.
+8. Reuse existing working code where possible.
+9. Do not delete working code unless needed to fix the app.
+10. If a requirement is unresolved in the source documents, use a clearly labelled prototype assumption and keep the value easy to change.
+11. Keep the prototype frontend-only. Simulate unavailable external services.
+12. After EVERY task, write a report to:
+    C:\Users\patel\Desktop\Porter\docs\progress\TASK-XX-report.md
+13. Each task report must include:
+    - task name
+    - status: PASS / PARTIAL / FAIL
+    - files created
+    - files modified
+    - what was implemented
+    - checks/tests performed
+    - result
+    - known limitations
+    - whether it is safe to continue
+14. Continue automatically to the next task after writing the report.
+15. If a task fails, try to fix it before moving on.
+16. Only stop for a genuine technical blocker.
+17. Missing API keys are NOT a blocker.
+18. Keep the UI mobile-first, polished, accessible, and consistent.
+19. Before final completion, run the app and verify the major flows manually.
+20. Do not claim completion unless the code actually exists and the prototype runs.
+
+CONNECTED PROTOTYPE REQUIREMENT
+-------------------------------
+The three frontends must behave like parts of one marketplace.
+
+Because there is no backend yet, create a shared frontend mock platform layer that acts as the single source of truth for prototype data.
+
+Preferred approach:
+- create a shared package/module such as:
+  packages/mock-platform/
+- centralize:
+  - users
+  - customer profiles
+  - drivers
+  - vehicles
+  - jobs
+  - quotes
+  - job events
+  - payments
+  - disputes
+  - notifications
+  - rate cards
+  - driver documents
+- persist state locally
+- provide shared functions/actions
+- use a role-aware demo shell or same-origin setup so Customer, Driver and Admin views can see the same prototype data
+- if separate app folders remain, connect them through a common shared mock-state mechanism and a demo launcher that makes role switching easy
+- do not duplicate separate disconnected hard-coded datasets for each role
+
+Examples of connected behavior:
+- Customer creates a job -> Driver can see the offer
+- Driver accepts -> Customer sees Driver Assigned
+- Driver changes status -> Customer sees job status change
+- Admin can reassign -> Driver/Customer state updates
+- Admin changes rate card -> new quotes use the new values
+- Customer raises dispute -> Admin sees it
+- Admin resolves dispute -> Customer sees resolution
+- Driver document expires -> Driver cannot go online
+- Driver completes delivery -> Customer sees proof and completed status
+
+TASK 01 — REVIEW CURRENT REPOSITORY
+-----------------------------------
+Goal:
+Inspect the current Porter repository and understand what already exists.
+
+Do:
+- inspect apps/
+- inspect packages/
+- inspect services/
+- inspect tests/
+- identify usable existing code
+- identify empty folders
+- identify broken/incomplete files
+
+Do NOT:
+- rewrite the whole project
+- start major feature work yet
+
+Output:
+docs/progress/TASK-01-report.md
+
+TASK 02 — MAKE THE FRONTEND WORKSPACE RUNNABLE
+----------------------------------------------
+Goal:
+Make the frontend prototype runnable before adding features.
+
+Do:
+- ensure the project has a working package setup
+- create/fix package.json files as needed
+- create real frontend entry points
+- create development scripts
+- create a simple demo launcher if useful
+- ensure customer, driver and admin views can be opened
+- use React + TypeScript + Vite if compatible with the current repo; otherwise use the existing working stack
+
+Success:
+- npm install works
+- frontend dev server starts
+- no empty app shell only
+- there is visible content for each role
+
+Output:
+docs/progress/TASK-02-report.md
+
+TASK 03 — SHARED MOCK PLATFORM STATE
+------------------------------------
+Goal:
+Create the shared connected prototype state layer.
+
+Create a reusable shared module/package containing:
+- customers
+- drivers
+- vehicles
+- jobs
+- job items
+- job events
+- quotes
+- rate cards
+- payments
+- payouts
+- disputes
+- ratings
+- notifications
+- driver documents
+
+Add reusable actions such as:
+- createJob
+- updateJobStatus
+- createQuote
+- acceptDriverOffer
+- declineDriverOffer
+- assignDriver
+- reassignDriver
+- cancelJob
+- createDispute
+- resolveDispute
+- updateRateCard
+- approveDriver
+- suspendDriver
+- updateDriverDocument
+- markDriverOnline
+- markDriverOffline
+
+Persist prototype state locally.
+
+Success:
+- all three role experiences can consume the same connected state
+
+Output:
+docs/progress/TASK-03-report.md
+
+TASK 04 — SHARED DESIGN SYSTEM
+------------------------------
+Goal:
+Create the visual system used by Customer, Driver and Admin.
+
+Build reusable:
+- Button
+- Input
+- Select
+- Textarea
+- Checkbox
+- Radio
+- Card
+- StatusBadge
+- Alert
+- Modal
+- Tabs
+- Navigation
+- PageHeader
+- EmptyState
+- LoadingState
+- ErrorState
+- Timeline
+- PriceBreakdown
+- PhotoPlaceholder
+- FileUploadPlaceholder
+
+Create:
+- colour tokens
+- typography
+- spacing
+- radius
+- shadows
+- status colours
+- responsive rules
+
+Style:
+- modern delivery marketplace
+- professional
+- clean
+- not a generic AI dashboard
+- customer: simple/trustworthy
+- driver: large controls/high contrast
+- admin: dense but clear
+
+Output:
+docs/progress/TASK-04-report.md
+
+TASK 05 — CUSTOMER HOME
+-----------------------
+Goal:
+Build the customer Home page.
+
+Include:
+- Porter brand/header
+- Book a Delivery CTA
+- pickup/drop-off quick start
+- active delivery card
+- recent deliveries
+- recent/saved addresses
+- trust/proof-of-delivery messaging
+- bottom nav: Home, Jobs, Help, Account
+
+Use realistic Melbourne demo data.
+
+Output:
+docs/progress/TASK-05-report.md
+
+TASK 06 — CUSTOMER BOOKING: ADDRESSES
+-------------------------------------
+Goal:
+Build pickup and drop-off booking steps.
+
+Include:
+- pickup address
+- drop-off address
+- recent addresses
+- validation
+- Back/Continue
+- preserve data between steps
+- Melbourne example addresses
+- map placeholder only, no real maps
+
+Output:
+docs/progress/TASK-06-report.md
+
+TASK 07 — CUSTOMER BOOKING: ITEM DETAILS
+----------------------------------------
+Goal:
+Build item details step.
+
+Include:
+- description
+- size: envelope / small / medium / large / bulky
+- approximate weight
+- up to 5 photo placeholders/uploads
+- quantity if useful
+- pickup notes
+- drop-off notes
+
+Output:
+docs/progress/TASK-07-report.md
+
+TASK 08 — CUSTOMER BOOKING: OPTIONS
+-----------------------------------
+Goal:
+Build delivery options step.
+
+Include:
+- stairs / number of flights
+- second-person/helper
+- delivery speed:
+  - Flexible
+  - Within 3 Hours
+  - Within 1 Hour
+- notes
+- recipient details when booking for someone else
+
+Output:
+docs/progress/TASK-08-report.md
+
+TASK 09 — VEHICLE RECOMMENDATION
+--------------------------------
+Goal:
+Build vehicle recommendation UI using prototype logic.
+
+Support:
+- bike/car
+- van/ute
+
+Use:
+- size
+- weight
+- quantity
+- helper requirement
+
+Allow customer to choose a larger vehicle.
+
+Keep unresolved thresholds easy to configure.
+
+Output:
+docs/progress/TASK-09-report.md
+
+TASK 10 — QUOTE AND PRICE SUMMARY
+---------------------------------
+Goal:
+Build working prototype quote calculation and quote screen.
+
+Use configurable prototype rate-card logic.
+
+Include:
+- vehicle
+- distance placeholder
+- estimated time placeholder
+- delivery speed
+- stairs
+- helper
+- minimum price
+- commission/internal breakdown where appropriate
+- fixed customer total
+- quote expiry indicator
+- rate-card version
+
+Use benchmark figures only as demo seed values, not permanent hard-coded production truth.
+
+Output:
+docs/progress/TASK-10-report.md
+
+TASK 11 — PAYMENT SIMULATOR
+---------------------------
+Goal:
+Build a frontend payment simulation step.
+
+Include:
+- mock payment method
+- payment authorized
+- payment failed
+- retry
+- receipt preview
+
+Do NOT collect real card numbers.
+
+Output:
+docs/progress/TASK-11-report.md
+
+TASK 12 — CUSTOMER SEARCHING + DRIVER ASSIGNED
+----------------------------------------------
+Goal:
+Build connected job matching states.
+
+Customer should see:
+- Searching for Driver
+- no-driver-found state
+- Driver Assigned
+- driver name
+- vehicle
+- rating
+- ETA
+- cancellation option according to prototype rules
+
+Use shared mock platform state.
+
+Output:
+docs/progress/TASK-12-report.md
+
+TASK 13 — DRIVER HOME + ONLINE STATUS
+-------------------------------------
+Goal:
+Build Driver Home.
+
+Include:
+- driver identity
+- vehicle
+- approval status
+- document status
+- online/offline toggle
+- current job
+- earnings snapshot
+- warnings
+
+Expired required documents must block going online.
+
+Output:
+docs/progress/TASK-13-report.md
+
+TASK 14 — DRIVER JOB OFFER
+--------------------------
+Goal:
+Build connected incoming offer flow.
+
+Driver sees:
+- pickup area
+- drop-off area
+- distance
+- item
+- vehicle requirement
+- time tier
+- driver earnings
+- offer countdown
+- Accept
+- Decline
+
+Before acceptance, do not show restricted customer contact/exact-address details.
+
+When accepted:
+- update shared job state
+- customer sees Driver Assigned
+
+Output:
+docs/progress/TASK-14-report.md
+
+TASK 15 — DRIVER ACTIVE JOB FLOW
+--------------------------------
+Goal:
+Build driver job execution screens.
+
+Include:
+- En Route to Pickup
+- At Pickup
+- pickup proof
+- Picked Up
+- En Route to Drop-off
+- At Drop-off
+- delivery proof
+- recipient code
+- Complete Delivery
+- Failed Pickup
+- Failed Delivery
+- Report Problem
+
+Every status change must update shared state and customer view.
+
+Output:
+docs/progress/TASK-15-report.md
+
+TASK 16 — CUSTOMER LIVE JOB
+---------------------------
+Goal:
+Build the customer live delivery screen.
+
+Include:
+- driver info
+- vehicle
+- ETA
+- pickup/drop-off
+- simulated map area
+- job status timeline
+- proof of pickup
+- proof of delivery
+- status changes driven by shared state
+
+Output:
+docs/progress/TASK-16-report.md
+
+TASK 17 — CUSTOMER JOBS + JOB DETAIL
+------------------------------------
+Goal:
+Build customer Jobs page.
+
+Include:
+- active jobs
+- previous jobs
+- status
+- pickup suburb
+- drop-off suburb
+- price
+- time option
+- date
+- job detail view
+- receipt
+- proof images/placeholders
+
+Output:
+docs/progress/TASK-17-report.md
+
+TASK 18 — CUSTOMER RATING + ISSUE REPORT
+----------------------------------------
+Goal:
+Build post-delivery feedback.
+
+Include:
+- 1–5 star rating
+- optional comment
+- report:
+  - damage
+  - lateness
+  - behaviour
+  - wrong item
+- evidence/photo placeholder
+- dispute created in shared state
+
+Admin must be able to see newly created disputes later.
+
+Output:
+docs/progress/TASK-18-report.md
+
+TASK 19 — CUSTOMER HELP + ACCOUNT
+---------------------------------
+Goal:
+Build Help and Account areas.
+
+Help:
+- FAQ
+- report issue
+- delivery guidance
+
+Account:
+- personal details
+- business details
+- ABN
+- saved addresses
+- settings
+- account deletion prototype
+
+Output:
+docs/progress/TASK-19-report.md
+
+TASK 20 — DRIVER ONBOARDING + DOCUMENTS
+---------------------------------------
+Goal:
+Build frontend driver onboarding.
+
+Include:
+- profile
+- identity details
+- licence
+- vehicle
+- vehicle photos
+- ABN
+- insurance
+- approval status
+- document expiry
+- resubmission
+- driver terms acceptance
+
+Admin must later be able to review the same mock records.
+
+Output:
+docs/progress/TASK-20-report.md
+
+TASK 21 — DRIVER EARNINGS + HISTORY
+-----------------------------------
+Goal:
+Build driver Earnings and Jobs history.
+
+Include:
+- per-job gross
+- commission
+- adjustments
+- net
+- weekly total
+- payout history
+- completed jobs
+- cancelled jobs
+- ratings
+
+Output:
+docs/progress/TASK-21-report.md
+
+TASK 22 — ADMIN SHELL + OVERVIEW
+--------------------------------
+Goal:
+Build admin frontend shell.
+
+Navigation:
+- Overview
+- Jobs
+- Live Map
+- Drivers
+- Customers
+- Disputes
+- Pricing
+- Payments
+- Reports
+- Settings
+- Audit Log
+
+Overview:
+- active jobs
+- searching
+- unmatched
+- completed today
+- disputes
+- drivers online
+- pending driver approvals
+
+Output:
+docs/progress/TASK-22-report.md
+
+TASK 23 — ADMIN JOBS
+--------------------
+Goal:
+Build admin Jobs views.
+
+Include:
+- job list
+- filters
+- search
+- job detail
+- timeline
+- customer
+- assigned driver
+- price
+- payment state
+- dispute state
+- manual assignment
+- reassignment
+- cancellation
+- unmatched handling
+
+Actions must update shared state.
+
+Output:
+docs/progress/TASK-23-report.md
+
+TASK 24 — ADMIN DRIVER MANAGEMENT
+---------------------------------
+Goal:
+Build Driver management.
+
+Include:
+- driver list
+- approval state
+- online state
+- vehicle
+- document status
+- ratings
+- cancellations
+- earnings
+- driver detail
+- approve
+- reject
+- request info
+- suspend
+- document review
+
+Changes must affect Driver frontend state.
+
+Output:
+docs/progress/TASK-24-report.md
+
+TASK 25 — ADMIN CUSTOMER MANAGEMENT
+-----------------------------------
+Goal:
+Build Customer management.
+
+Include:
+- customer list
+- customer detail
+- business account flag
+- job history
+- refunds
+- disputes
+- account flags
+
+Output:
+docs/progress/TASK-25-report.md
+
+TASK 26 — ADMIN DISPUTES
+------------------------
+Goal:
+Build dispute management.
+
+Include:
+- dispute list
+- evidence
+- job link
+- customer
+- driver
+- admin notes
+- status
+- decision
+- full refund
+- partial refund
+- driver adjustment
+- resolved state
+
+Resolution must update shared state.
+
+Output:
+docs/progress/TASK-26-report.md
+
+TASK 27 — ADMIN PRICING
+-----------------------
+Goal:
+Build pricing/rate-card management.
+
+Include configurable:
+- vehicle class rates
+- distance
+- time
+- urgency tier
+- stairs
+- helper
+- waiting
+- minimum job price
+- commission
+- effective date
+- rate-card version
+
+New customer quotes must use updated prototype pricing.
+Existing jobs must retain their saved quote.
+
+Output:
+docs/progress/TASK-27-report.md
+
+TASK 28 — ADMIN PAYMENTS + REPORTS
+----------------------------------
+Goal:
+Build frontend payment/reporting views.
+
+Payments:
+- authorized
+- captured
+- refunded
+- partially refunded
+- dispute hold
+- driver payout balance
+
+Reports:
+- completed jobs
+- match rate
+- unmatched jobs
+- cancellation rate
+- disputes
+- GMV
+- commission/revenue
+- driver earnings
+
+Use prototype data only.
+
+Output:
+docs/progress/TASK-28-report.md
+
+TASK 29 — ADMIN AUDIT LOG
+-------------------------
+Goal:
+Build immutable-style prototype audit history.
+
+Track admin actions such as:
+- assignment
+- reassignment
+- driver approval
+- driver suspension
+- pricing changes
+- refunds
+- dispute outcomes
+
+Display:
+- actor
+- action
+- entity
+- timestamp
+- before
+- after
+- reason
+
+Output:
+docs/progress/TASK-29-report.md
+
+TASK 30 — CONNECTED END-TO-END DEMO FLOW
+----------------------------------------
+Goal:
+Ensure all three role experiences work together.
+
+Verify this exact scenario:
+1. Customer creates a delivery
+2. Quote is generated
+3. Customer confirms mock payment
+4. Job becomes Searching
+5. Driver sees offer
+6. Driver accepts
+7. Customer sees Driver Assigned
+8. Driver goes to pickup
+9. Customer timeline updates
+10. Driver captures pickup proof
+11. Driver marks Picked Up
+12. Driver reaches drop-off
+13. Driver captures delivery proof
+14. Driver completes job
+15. Customer sees Delivered/Completed
+16. Customer rates driver
+17. Customer opens a dispute
+18. Admin sees dispute
+19. Admin resolves dispute
+20. Customer sees resolution
+
+Fix any broken connection.
+
+Output:
+docs/progress/TASK-30-report.md
+
+TASK 31 — ADMIN REASSIGNMENT DEMO
+---------------------------------
+Goal:
+Verify admin intervention.
+
+Scenario:
+- active job has assigned driver
+- driver cancels
+- job returns to Searching
+- admin manually reassigns to another approved driver
+- new driver sees job
+- customer sees new assignment
+
+Fix any issues.
+
+Output:
+docs/progress/TASK-31-report.md
+
+TASK 32 — RESPONSIVENESS + ACCESSIBILITY
+----------------------------------------
+Goal:
+Polish all three role experiences.
+
+Fix:
+- mobile layouts
+- horizontal overflow
+- tap targets
+- keyboard focus
+- form labels
+- contrast
+- screen-reader labels
+- status communication
+- readable errors
+- safe areas
+- responsive admin layout
+
+Output:
+docs/progress/TASK-32-report.md
+
+TASK 33 — LOADING, EMPTY, ERROR STATES
+--------------------------------------
+Goal:
+Add realistic UX states across all three frontends.
+
+Include:
+- loading
+- empty
+- validation
+- network simulation
+- failed payment
+- unmatched job
+- expired quote
+- expired driver docs
+- no jobs
+- no disputes
+- no search results
+
+Output:
+docs/progress/TASK-33-report.md
+
+TASK 34 — UI/UX POLISH
+----------------------
+Goal:
+Make the prototype feel professional.
+
+Review and fix:
+- typography
+- spacing
+- visual hierarchy
+- buttons
+- inputs
+- cards
+- navigation
+- status badges
+- mobile usability
+- driver one-handed usability
+- admin density
+- inconsistent colours
+- generic AI-looking UI
+
+Do not add unrelated features.
+
+Output:
+docs/progress/TASK-34-report.md
+
+TASK 35 — TESTS / CHECKS
+------------------------
+Goal:
+Add lightweight automated checks where practical.
+
+Prioritize:
+- quote calculation
+- vehicle recommendation
+- job status transitions
+- driver eligibility
+- rate-card changes
+- dispute creation/resolution
+- admin reassignment
+- document expiry
+- customer/driver connected state
+
+Output:
+docs/progress/TASK-35-report.md
+
+TASK 36 — FINAL RUN + FIX PASS
+------------------------------
+Goal:
+Run the complete prototype and fix obvious issues.
+
+Do:
+- install dependencies if needed
+- run typecheck if configured
+- run lint if configured
+- run tests if configured
+- run production build
+- start the prototype
+- verify Customer view
+- verify Driver view
+- verify Admin view
+- verify connected flow
+
+Do not stop at first error.
+Fix issues within your control.
+
+Output:
+docs/progress/TASK-36-report.md
+
+TASK 37 — FINAL HANDOFF
+-----------------------
+Goal:
+Prepare a clear final handoff.
+
+Create:
+docs/progress/FINAL-BUILD-REPORT.md
+
+Include:
+- what was built
+- Customer features
+- Driver features
+- Admin features
+- how the three are connected
+- prototype assumptions
+- simulated integrations
+- known limitations
+- exact run commands
+- test/build results
+- what still requires a real backend later
+- what requires real maps later
+- what requires real payments later
+- what requires real notifications later
+- what requires legal/security review later
+
+FINAL COMPLETION CHECK
+----------------------
+Do not claim success unless:
+- customer frontend exists and works
+- driver frontend exists and works
+- admin frontend exists and works
+- the three share connected prototype state
+- customer-to-driver-to-admin flow works
+- major pages contain actual UI
+- app runs locally
+- final report exists
+
+FINAL MESSAGE
+-------------
+When all tasks are complete, respond with:
+
+PORTER CONNECTED FRONTEND PROTOTYPE COMPLETE — READY FOR REVIEW
+
+If a genuine blocker prevents completion, respond with:
+
+PORTER PROTOTYPE INCOMPLETE — BLOCKED BY: [specific blocker]

@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "app": "porter",
+      "status": "PASS",
+      "route": "http://127.0.0.1:4140/admin",
+      "meaningfulInteraction": true,
+      "consoleErrors": []
+    },
+    {
+      "app": "customer",
+      "status": "PASS",
+      "route": "http://127.0.0.1:4176/book",
+      "meaningfulInteraction": true,
+      "consoleErrors": []
+    },
+    {
+      "app": "driver",
+      "status": "PASS",
+      "route": "http://127.0.0.1:4174/",
+      "meaningfulInteraction": true,
+      "consoleErrors": []
+    },
+    {
+      "app": "admin",
+      "status": "PASS",
+      "route": "http://127.0.0.1:4175/",
+      "meaningfulInteraction": true,
+      "consoleErrors": []
+    }
+  ]
+}

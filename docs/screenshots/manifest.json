@@ -1,0 +1,379 @@
+{
+  "capturedAt": "2026-10-10T10:52:54.799Z",
+  "screenshots": [
+    {
+      "role": "Customer",
+      "title": "Home",
+      "size": "desktop",
+      "file": "customer-home-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Home",
+      "size": "mobile",
+      "file": "customer-home-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Jobs",
+      "size": "desktop",
+      "file": "customer-jobs-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Jobs",
+      "size": "mobile",
+      "file": "customer-jobs-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Help",
+      "size": "desktop",
+      "file": "customer-help-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Help",
+      "size": "mobile",
+      "file": "customer-help-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Account",
+      "size": "desktop",
+      "file": "customer-account-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Account",
+      "size": "mobile",
+      "file": "customer-account-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Active delivery tracking",
+      "size": "desktop",
+      "file": "customer-tracking-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Active delivery tracking",
+      "size": "mobile",
+      "file": "customer-tracking-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Completed delivery",
+      "size": "desktop",
+      "file": "customer-completed-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Completed delivery",
+      "size": "mobile",
+      "file": "customer-completed-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Addresses",
+      "size": "desktop",
+      "file": "customer-booking-1-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Addresses",
+      "size": "mobile",
+      "file": "customer-booking-1-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Item details",
+      "size": "desktop",
+      "file": "customer-booking-2-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Item details",
+      "size": "mobile",
+      "file": "customer-booking-2-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Delivery options",
+      "size": "desktop",
+      "file": "customer-booking-3-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Delivery options",
+      "size": "mobile",
+      "file": "customer-booking-3-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Vehicle recommendation",
+      "size": "desktop",
+      "file": "customer-booking-4-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Vehicle recommendation",
+      "size": "mobile",
+      "file": "customer-booking-4-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Calculated quote",
+      "size": "desktop",
+      "file": "customer-booking-5-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Calculated quote",
+      "size": "mobile",
+      "file": "customer-booking-5-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Mock payment",
+      "size": "desktop",
+      "file": "customer-booking-6-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Mock payment",
+      "size": "mobile",
+      "file": "customer-booking-6-mobile.png"
+    },
+    {
+      "role": "Driver",
+      "title": "Home",
+      "size": "desktop",
+      "file": "driver-home-desktop.png"
+    },
+    {
+      "role": "Driver",
+      "title": "Home",
+      "size": "mobile",
+      "file": "driver-home-mobile.png"
+    },
+    {
+      "role": "Driver",
+      "title": "Documents",
+      "size": "desktop",
+      "file": "driver-documents-desktop.png"
+    },
+    {
+      "role": "Driver",
+      "title": "Documents",
+      "size": "mobile",
+      "file": "driver-documents-mobile.png"
+    },
+    {
+      "role": "Driver",
+      "title": "Earnings",
+      "size": "desktop",
+      "file": "driver-earnings-desktop.png"
+    },
+    {
+      "role": "Driver",
+      "title": "Earnings",
+      "size": "mobile",
+      "file": "driver-earnings-mobile.png"
+    },
+    {
+      "role": "Driver",
+      "title": "History",
+      "size": "desktop",
+      "file": "driver-history-desktop.png"
+    },
+    {
+      "role": "Driver",
+      "title": "History",
+      "size": "mobile",
+      "file": "driver-history-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Report a delivery issue",
+      "size": "desktop",
+      "file": "customer-report-issue-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Report a delivery issue",
+      "size": "mobile",
+      "file": "customer-report-issue-mobile.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Delivery with submitted dispute",
+      "size": "desktop",
+      "file": "customer-disputed-delivery-desktop.png"
+    },
+    {
+      "role": "Customer",
+      "title": "Delivery with submitted dispute",
+      "size": "mobile",
+      "file": "customer-disputed-delivery-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Overview",
+      "size": "desktop",
+      "file": "admin-overview-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Overview",
+      "size": "mobile",
+      "file": "admin-overview-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Jobs",
+      "size": "desktop",
+      "file": "admin-jobs-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Jobs",
+      "size": "mobile",
+      "file": "admin-jobs-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Job detail and driver reassignment",
+      "size": "desktop",
+      "file": "admin-job-detail-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Job detail and driver reassignment",
+      "size": "mobile",
+      "file": "admin-job-detail-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Live Map",
+      "size": "desktop",
+      "file": "admin-live-map-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Live Map",
+      "size": "mobile",
+      "file": "admin-live-map-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Drivers",
+      "size": "desktop",
+      "file": "admin-drivers-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Drivers",
+      "size": "mobile",
+      "file": "admin-drivers-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Customers",
+      "size": "desktop",
+      "file": "admin-customers-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Customers",
+      "size": "mobile",
+      "file": "admin-customers-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Disputes",
+      "size": "desktop",
+      "file": "admin-disputes-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Disputes",
+      "size": "mobile",
+      "file": "admin-disputes-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Dispute detail and resolution",
+      "size": "desktop",
+      "file": "admin-dispute-detail-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Dispute detail and resolution",
+      "size": "mobile",
+      "file": "admin-dispute-detail-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Pricing",
+      "size": "desktop",
+      "file": "admin-pricing-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Pricing",
+      "size": "mobile",
+      "file": "admin-pricing-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Payments",
+      "size": "desktop",
+      "file": "admin-payments-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Payments",
+      "size": "mobile",
+      "file": "admin-payments-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Reports",
+      "size": "desktop",
+      "file": "admin-reports-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Reports",
+      "size": "mobile",
+      "file": "admin-reports-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Settings",
+      "size": "desktop",
+      "file": "admin-settings-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Settings",
+      "size": "mobile",
+      "file": "admin-settings-mobile.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Audit Log",
+      "size": "desktop",
+      "file": "admin-audit-log-desktop.png"
+    },
+    {
+      "role": "Admin",
+      "title": "Audit Log",
+      "size": "mobile",
+      "file": "admin-audit-log-mobile.png"
+    }
+  ],
+  "errors": [],
+  "note": "Screens captured after network idle, fonts and images loaded. Isolated seeded browser state; no changes to your existing browser records."
+}

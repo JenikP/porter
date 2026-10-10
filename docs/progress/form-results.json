@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Customer personal/business/ABN and saved address updates",
+    "Admin sees customer edits and saves account flag",
+    "Published pricing changes new customer quote, retains old delivery total and item photo",
+    "Driver onboarding save and document resubmission",
+    "Admin reviews shared document and approves driver; driver can go online",
+    "Account deletion and demo restoration"
+  ],
+  "errors": []
+}

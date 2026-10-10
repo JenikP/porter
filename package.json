@@ -1,0 +1,37 @@
+{
+  "name": "porter-delivery-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/porter-web",
+    "apps/customer-web",
+    "apps/driver-web",
+    "apps/admin-web",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/porter-web",
+    "dev:demo": "npm run dev --workspace=apps/porter-web",
+    "dev:customer": "npm run dev --workspace=apps/customer-web",
+    "dev:driver": "npm run dev --workspace=apps/driver-web",
+    "dev:admin": "npm run dev --workspace=apps/admin-web",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "node scripts/test.mjs",
+    "test:e2e": "node scripts/e2e.mjs && node scripts/interventions.mjs && node scripts/smoke.mjs && node scripts/error-states.mjs && node scripts/forms.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.5",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.1",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.3.3",
+    "vite": "^5.2.11"
+  }
+}

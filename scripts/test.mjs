@@ -1,0 +1,10 @@
+import { build } from 'esbuild';
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const directory=fs.mkdtempSync(path.join(os.tmpdir(),'porter-tests-')); const outfile=path.join(directory,'platform.test.cjs');
+await build({ entryPoints:['tests/platform.test.ts'],outfile,bundle:true,platform:'node',format:'cjs',target:'node20',alias:Object.fromEntries(['shared','domain','config'].map(name=>['@porter/'+name,path.resolve('packages/'+name+'/src/index.ts')])) });
+const result=spawnSync(process.execPath,['--test',outfile],{ encoding:'utf8' }); console.log(result.stdout); if(result.stderr) console.error(result.stderr); process.exitCode=result.status ?? 1;
+fs.writeFileSync('docs/progress/unit-results.json',JSON.stringify({ status:result.status===0 ? 'PASS' : 'FAIL',tests:Number(result.stdout.match(/# tests (\d+)/)?.[1] ?? 0),failures:Number(result.stdout.match(/# fail (\d+)/)?.[1] ?? 0) },null,2));
+fs.unlinkSync(outfile); fs.rmdirSync(directory);

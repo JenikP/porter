@@ -1,0 +1,14 @@
+{
+  "name": "@porter/porter-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": { "@porter/mock-platform": "*", "@porter/domain": "*", "@porter/shared": "*", "@porter/ui": "*", "react": "^18.2.0", "react-dom": "^18.2.0", "react-router-dom": "^6.23.1" },
+  "devDependencies": {}
+}

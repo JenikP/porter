@@ -1,0 +1,22 @@
+{
+  "name": "@porter/customer-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 5173",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host --port 5173",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@porter/config": "*",
+    "@porter/domain": "*",
+    "@porter/shared": "*",
+    "@porter/mock-platform": "*",
+    "@porter/ui": "*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.1"
+  }
+}

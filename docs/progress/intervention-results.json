@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Driver cancellation returns job to searching",
+    "Admin assigns another eligible driver",
+    "Customer sees reassigned driver",
+    "Second driver sees active assignment",
+    "Cancellation count and audit persisted",
+    "No browser errors"
+  ]
+}

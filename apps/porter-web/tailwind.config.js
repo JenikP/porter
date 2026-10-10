@@ -1,0 +1,1 @@
+export default { content: ['./src/**/*.{ts,tsx}', '../customer-web/src/**/*.{ts,tsx}', '../driver-web/src/**/*.{ts,tsx}', '../admin-web/src/**/*.{ts,tsx}', '../../packages/ui/src/**/*.{ts,tsx}'], theme: { extend: { colors: { brand: { 500: '#15705c', 600: '#115b4b' } } } }, plugins: [] };

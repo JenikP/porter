@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "url": "http://127.0.0.1:5173/jobs/job_hkfefwsi",
+  "checks": [
+    "Customer meaningful home loaded",
+    "Existing seeded delivery cancelled through live UI to free the demo driver",
+    "Address / item / options / vehicle / real quote rendered",
+    "Mock payment authorized; shared job searching",
+    "Offer hides exact customer addresses before acceptance",
+    "Driver acceptance visible in customer on same origin",
+    "Incorrect recipient code blocked",
+    "Completed delivery has pickup and delivery proof",
+    "Customer rating and dispute created; delivery changes to Under Review",
+    "Admin resolved dispute with partial refund and adjustment",
+    "Customer sees admin resolution",
+    "Shared persisted financial, proof, rating and audit records verified",
+    "Customer mobile has no horizontal overflow",
+    "No browser runtime or console errors"
+  ],
+  "errors": [],
+  "jobId": "job_hkfefwsi",
+  "screenshots": [
+    "C:/Users/patel/.codex/visualizations/2026/10/10/01a12485-e76c-7d22-a0a9-d7236011e6d3/porter-completed-desktop.png",
+    "C:/Users/patel/.codex/visualizations/2026/10/10/01a12485-e76c-7d22-a0a9-d7236011e6d3/porter-resolved-mobile.png"
+  ]
+}

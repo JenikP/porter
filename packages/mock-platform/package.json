@@ -1,0 +1,18 @@
+﻿{
+  "name": "@porter/mock-platform",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@porter/shared": "*"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

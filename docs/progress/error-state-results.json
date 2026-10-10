@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Duplicate-address validation",
+    "Missing-item validation",
+    "Expired quote blocks checkout",
+    "Failed payment visible",
+    "No eligible free driver produces unmatched state",
+    "Retry authorizes same job without duplicate booking",
+    "Expired required driver document forces offline and blocks online",
+    "Shared loading simulation recovers",
+    "Shared offline error survives role switching and retry restores saved data",
+    "Admin empty search and dispute states"
+  ],
+  "errors": []
+}

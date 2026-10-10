@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "checks": [
+    "customer 1505",
+    "driver 1505",
+    "admin 1505",
+    "customer 768",
+    "driver 768",
+    "admin 768",
+    "customer 390",
+    "driver 390",
+    "admin 390",
+    "customer 320",
+    "driver 320",
+    "admin 320",
+    "Sidebar collapse, sorting and close details",
+    "Dark admin",
+    "Quote layout",
+    "Quote mobile",
+    "Reduced motion",
+    "Dialog focus and Escape restore"
+  ],
+  "errors": []
+}
