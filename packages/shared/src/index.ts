@@ -161,6 +161,8 @@ export interface SavedAddress {
 }
 
 export interface DriverProfile {
+  /** Explicitly shared foreground location; not continuous background tracking. */
+  location?: { lat: number; lng: number; updatedAt: Date };
   name?: string;
   phone?: string;
   email?: string;

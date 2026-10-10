@@ -1,14 +1,17 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { MockPlatformProvider, PlatformErrorBoundary } from '@porter/mock-platform';
+import { PlatformErrorBoundary } from '@porter/mock-platform';
 import { App } from './app';
+import { Application, registerMobileShell } from '@porter/app-session';
 import './styles.css';
 
+registerMobileShell();
 createRoot(document.getElementById('root')!).render(
-  <PlatformErrorBoundary><MockPlatformProvider>
+  <PlatformErrorBoundary>
     <BrowserRouter>
-      <App />
+      <Application role="customer"><App /></Application>
     </BrowserRouter>
-  </MockPlatformProvider></PlatformErrorBoundary>,
+  </PlatformErrorBoundary>,
 );
+

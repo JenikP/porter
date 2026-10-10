@@ -1,0 +1,50 @@
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: porter
+      POSTGRES_USER: porter
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes: ["porter-database:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U porter -d porter"]
+      interval: 5s
+      retries: 10
+  api:
+    build: {context: .., dockerfile: deploy/Dockerfile.api}
+    environment:
+      DATABASE_URL: postgres://porter:${POSTGRES_PASSWORD}@database:5432/porter
+      APP_ORIGINS: ${APP_ORIGINS:?Set three HTTPS app origins}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:?Set manager email}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:?Set strong manager password}
+      ALLOW_SIMULATORS: ${ALLOW_SIMULATORS:-false}
+      PAYMENT_PROVIDER: ${PAYMENT_PROVIDER:-simulator}
+      PAYMENT_URL: ${PAYMENT_URL:-}
+      PAYMENT_TOKEN: ${PAYMENT_TOKEN:-}
+      PAYMENT_WEBHOOK_SECRET: ${PAYMENT_WEBHOOK_SECRET:-}
+      ROUTING_PROVIDER: ${ROUTING_PROVIDER:-simulator}
+      ROUTING_URL: ${ROUTING_URL:-}
+      ADDRESS_SEARCH_URL: ${ADDRESS_SEARCH_URL:-}
+      ROUTING_TOKEN: ${ROUTING_TOKEN:-}
+      NOTIFICATION_PROVIDER: ${NOTIFICATION_PROVIDER:-simulator}
+      NOTIFICATION_URL: ${NOTIFICATION_URL:-}
+      NOTIFICATION_TOKEN: ${NOTIFICATION_TOKEN:-}
+      NOTIFICATION_CHANNELS: ${NOTIFICATION_CHANNELS:-}
+      NATIVE_ORIGINS: ${NATIVE_ORIGINS:-}
+      SESSION_CROSS_SITE: ${SESSION_CROSS_SITE:-false}
+    depends_on:
+      database: {condition: service_healthy}
+  customer:
+    build: {context: .., dockerfile: deploy/Dockerfile.web, args: {APP: customer}}
+    ports: ["127.0.0.1:8081:80"]
+    depends_on: [api]
+  driver:
+    build: {context: .., dockerfile: deploy/Dockerfile.web, args: {APP: driver}}
+    ports: ["127.0.0.1:8082:80"]
+    depends_on: [api]
+  admin:
+    build: {context: .., dockerfile: deploy/Dockerfile.web, args: {APP: admin}}
+    ports: ["127.0.0.1:8083:80"]
+    depends_on: [api]
+volumes:
+  porter-database:

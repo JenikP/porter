@@ -7,7 +7,7 @@ import { useState } from 'react';
 export function HomePage() {
   const navigate = useNavigate();
   const { customers, jobs, drivers } = useMockPlatform();
-  const customer = customers.find(entry => entry.id === 'customer_001') ?? customers[0];
+  const customer = customers[0];
   const [pickup, setPickup] = useState(customer?.savedAddresses[0]?.address ?? '120 Collins St, Melbourne VIC 3000');
   const [dropoff, setDropoff] = useState(customer?.savedAddresses[1]?.address ?? '700 Bourke St, Docklands VIC 3008');
   const book = () => { sessionStorage.removeItem('porter.booking'); navigate('/book'); };

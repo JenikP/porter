@@ -6,7 +6,7 @@ const {chromium}=require(process.env.PORTER_PLAYWRIGHT_PATH||'C:/Users/patel/.ca
 const out='C:/Users/patel/.codex/visualizations/2026/10/10/01a12485-e76c-7d22-a0a9-d7236011e6d3';
 const browser=await chromium.launch({headless:true,channel:'msedge'});const page=await browser.newPage();const errors=[];
 page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-const checks=[];const base='http://127.0.0.1:5173';
+const checks=[];const base='http://127.0.0.1:5176';
 async function check(label){await page.waitForLoadState('networkidle');await page.evaluate(()=>document.fonts.ready);const overflow=await page.evaluate(()=>Array.from(document.querySelectorAll('body *')).filter(el=>{const r=el.getBoundingClientRect();return r.right>innerWidth+1||r.left<-1;}).map(el=>({tag:el.tagName,cls:el.className,width:el.getBoundingClientRect().width,text:el.textContent?.slice(0,45)})));const wide=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);if(wide)console.log(label,overflow.slice(0,12));assert.equal(wide,false,label);checks.push(label);}
 try{
  for(const width of [1505,768,390,320]){
@@ -20,3 +20,4 @@ try{
  await page.goto(base+'/account');await click('Request account deletion');await page.getByRole('dialog').waitFor();assert.equal(await page.locator(':focus').innerText(),'Keep account');await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);assert.equal(await page.locator(':focus').innerText(),'Request account deletion');checks.push('Dialog focus and Escape restore');
  assert.deepEqual(errors,[]);fs.writeFileSync('docs/progress/ux-check-results.json',JSON.stringify({status:'PASS',checks,errors},null,2));console.log('PASS',checks);
 }finally{await browser.close();}
+

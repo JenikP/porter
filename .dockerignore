@@ -1,0 +1,11 @@
+node_modules
+**/node_modules
+**/dist
+.git
+.env
+.env.*
+.data
+.tmp*
+docs/progress/launch/*.png
+**/*.sqlite*
+**/*.log

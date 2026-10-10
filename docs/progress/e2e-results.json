@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "url": "http://127.0.0.1:5173/jobs/job_hkfefwsi",
+  "url": "http://127.0.0.1:5176/jobs/job_4ms0bec4",
   "checks": [
     "Customer meaningful home loaded",
     "Existing seeded delivery cancelled through live UI to free the demo driver",
@@ -18,7 +18,7 @@
     "No browser runtime or console errors"
   ],
   "errors": [],
-  "jobId": "job_hkfefwsi",
+  "jobId": "job_4ms0bec4",
   "screenshots": [
     "C:/Users/patel/.codex/visualizations/2026/10/10/01a12485-e76c-7d22-a0a9-d7236011e6d3/porter-completed-desktop.png",
     "C:/Users/patel/.codex/visualizations/2026/10/10/01a12485-e76c-7d22-a0a9-d7236011e6d3/porter-resolved-mobile.png"

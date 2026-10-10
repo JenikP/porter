@@ -1,3 +1,8 @@
+# Porter launch development — central applications
+
+Branch `launch-development` adds separate authenticated Customer, Driver and Operations apps with persistent central API data. Independent multi-browser delivery/dispute acceptance and production bundle checks pass locally; the original frontend-only connected demo remains available at port 5176.
+
+Phase 1 PASS. Phases 2–7 PARTIAL for real launch: external providers/hosting, production data controls, native SDK/device tests and launch approvals remain open. See [launch roadmap](docs/progress/LAUNCH-ROADMAP.md), [implementation report](docs/progress/launch/LAUNCH-IMPLEMENTATION-REPORT.md) and [readiness checklist](docs/LAUNCH-READINESS.md). Prototype task completion below applies to the preserved demo, not a production launch.
 # Porter Connected Frontend — Complete
 
 Verified 10 October 2026 (Australia/Sydney). All 37 tasks PASS.

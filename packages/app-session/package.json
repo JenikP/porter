@@ -1,0 +1,1 @@
+{"name":"@porter/app-session","version":"1.0.0","private":true,"main":"./src/index.ts","types":"./src/index.ts","scripts":{"typecheck":"tsc --noEmit","build":"tsc --noEmit"},"dependencies":{"@porter/mock-platform":"*","@porter/shared":"*"},"peerDependencies":{"react":"^18.2.0","react-router-dom":"^6.23.1"}}

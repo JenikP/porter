@@ -12,11 +12,11 @@ const click = name => page.getByRole('button',{ name,exact:true }).click();
 const checks = [];
 const record = text => { checks.push(text); console.log('PASS:',text); };
 try {
- await page.goto('http://127.0.0.1:5173/');
+ await page.goto('http://127.0.0.1:5176/');
  await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); }); await page.reload();
  await page.getByRole('heading',{ name:'Deliver across Melbourne' }).waitFor(); record('Customer meaningful home loaded');
  await click('Driver'); await click('Cancel assignment · return to search');
- await click('Customer'); await page.goto('http://127.0.0.1:5173/jobs/job_001'); await click('Cancel delivery · free'); await page.goto('http://127.0.0.1:5173/');
+ await click('Customer'); await page.goto('http://127.0.0.1:5176/jobs/job_001'); await click('Cancel delivery · free'); await page.goto('http://127.0.0.1:5176/');
  record('Existing seeded delivery cancelled through live UI to free the demo driver');
  await click('Book a delivery'); await click('Continue');
  await page.getByLabel('Item description',{ exact:true }).fill('Two boxed lamps from Carlton shop'); await click('Continue'); await click('Continue'); await click('Continue');
@@ -26,13 +26,13 @@ try {
  const jobId = page.url().split('/').pop(); record('Mock payment authorized; shared job searching');
  await click('Driver'); assert.ok(!(await page.locator('main').innerText()).includes('120 Collins St')); record('Offer hides exact customer addresses before acceptance'); await click('Accept offer');
  await page.getByRole('heading',{ name:'Driver Assigned',exact:true }).waitFor();
- await click('Customer'); await page.goto('http://127.0.0.1:5173/jobs/' + jobId);
+ await click('Customer'); await page.goto('http://127.0.0.1:5176/jobs/' + jobId);
  await page.getByRole('heading',{ name:'Driver Assigned',exact:true }).waitFor(); record('Driver acceptance visible in customer on same origin');
  await click('Driver'); await click('Start pickup journey'); await click('Arrived at pickup'); await click('Capture pickup proof'); await click('Confirm picked up');
  await click('Start drop-off journey'); await click('Arrived at drop-off'); await click('Capture delivery proof');
  await page.getByLabel('Recipient code',{ exact:true }).fill('1111'); await click('Confirm delivery code'); await page.getByRole('alert').filter({ hasText:'Recipient code does not match' }).waitFor(); record('Incorrect recipient code blocked');
  await page.getByLabel('Recipient code',{ exact:true }).fill('2468'); await click('Confirm delivery code'); await click('Complete delivery');
- await click('Customer'); await page.goto('http://127.0.0.1:5173/jobs/' + jobId); await page.getByRole('heading',{ name:'Completed',exact:true }).waitFor();
+ await click('Customer'); await page.goto('http://127.0.0.1:5176/jobs/' + jobId); await page.getByRole('heading',{ name:'Completed',exact:true }).waitFor();
  assert.equal(await page.locator('img.proof').count(),2); record('Completed delivery has pickup and delivery proof');
  await page.screenshot({ path:evidence + '/porter-completed-desktop.png',fullPage:true });
  await page.getByRole('button',{ name:'5 star rating',exact:true }).click(); await page.getByLabel('Rating comment (optional)').fill('Careful handling and friendly driver'); await click('Submit rating');
@@ -41,7 +41,7 @@ try {
  await page.getByLabel('Admin notes',{ exact:true }).fill('Compared pickup and delivery evidence.'); await click('Save notes · under review');
  await page.getByLabel('Decision',{ exact:true }).fill('Partial refund approved for packaging damage.'); await page.getByLabel('Refund amount (AUD)',{ exact:true }).fill('5'); await page.getByLabel('Driver deduction (AUD)',{ exact:true }).fill('2'); await click('Resolve dispute');
  await page.getByText('Resolved: Partial refund approved for packaging damage.',{ exact:true }).waitFor(); record('Admin resolved dispute with partial refund and adjustment');
- await click('Customer'); await page.goto('http://127.0.0.1:5173/jobs/' + jobId); await page.getByRole('heading',{ name:'Resolved',exact:true }).waitFor(); await page.getByText(/Resolution: Partial refund approved/).waitFor(); record('Customer sees admin resolution');
+ await click('Customer'); await page.goto('http://127.0.0.1:5176/jobs/' + jobId); await page.getByRole('heading',{ name:'Resolved',exact:true }).waitFor(); await page.getByText(/Resolution: Partial refund approved/).waitFor(); record('Customer sees admin resolution');
  const state = await page.evaluate(() => JSON.parse(localStorage.getItem('porter.mock-platform.v2')));
  assert.equal(state.payments.find(p => p.jobId === jobId).refundAmount,5);
  assert.equal(state.ratings.filter(r => r.jobId === jobId).length,1);
@@ -56,3 +56,4 @@ try {
  console.error(error); console.error('URL',page.url()); console.error((await page.locator('body').innerText()).slice(0,6000));
  fs.writeFileSync('docs/progress/e2e-results.json',JSON.stringify({ status:'FAIL',checks,errors,error:String(error) },null,2)); process.exitCode=1;
 } finally { await browser.close(); }
+

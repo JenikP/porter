@@ -16,7 +16,7 @@ import { deserializeMockPlatformState } from './serialization';
 import { createMockPlatformActions, driverHasValidDocuments } from './store';
 import type { MockPlatformActions, MockPlatformContextValue, MockPlatformState } from './store';
 
-const MockPlatformContext = createContext<MockPlatformContextValue | undefined>(undefined);
+export const MockPlatformContext = createContext<MockPlatformContextValue | undefined>(undefined);
 
 export function MockPlatformProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<MockPlatformState>(() => loadMockPlatformState());

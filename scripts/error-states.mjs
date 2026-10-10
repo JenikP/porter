@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 const require=createRequire(import.meta.url); const { chromium }=require(process.env.PORTER_PLAYWRIGHT_PATH || 'C:/Users/patel/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright'); const browser=await chromium.launch({ headless:true,channel:'msedge' }); const page=await browser.newPage({ viewport:{ width:390,height:844 } }); const checks=[]; const errors=[]; page.on('pageerror',e=>errors.push(e.message));
 const click=name=>page.getByRole('button',{ name,exact:true }).click(); const record=text=>{ checks.push(text); console.log('PASS:',text); };
 try {
- await page.clock.install(); await page.goto('http://127.0.0.1:5173/book'); await page.getByLabel('Drop-off address').fill('120 Collins St, Melbourne VIC 3000'); await click('Continue'); await page.getByRole('alert').filter({ hasText:'two different' }).waitFor(); record('Duplicate-address validation');
+ await page.clock.install(); await page.goto('http://127.0.0.1:5176/book'); await page.getByLabel('Drop-off address').fill('120 Collins St, Melbourne VIC 3000'); await click('Continue'); await page.getByRole('alert').filter({ hasText:'two different' }).waitFor(); record('Duplicate-address validation');
  await page.getByLabel('Drop-off address').fill('700 Bourke St, Docklands VIC 3008'); await click('Continue'); await click('Continue'); await page.getByRole('alert').filter({ hasText:'Describe the item' }).waitFor(); record('Missing-item validation');
  await page.getByLabel('Item description').fill('Books from Melbourne library'); await click('Continue'); await click('Continue'); await click('Continue');
  await page.clock.fastForward(16*60000); await click('Continue'); await page.getByRole('alert').filter({ hasText:'Quote expired' }).waitFor(); record('Expired quote blocks checkout');
@@ -19,3 +19,4 @@ try {
  await click('Admin'); await click('Jobs'); await page.getByLabel('Search jobs').fill('NO-SUCH-DELIVERY'); await page.getByText('No jobs match these filters.',{ exact:true }).waitFor(); await click('Disputes'); await page.getByText(/No disputes match this view/).waitFor(); record('Admin empty search and dispute states');
  assert.deepEqual(errors,[]); fs.writeFileSync('docs/progress/error-state-results.json',JSON.stringify({ status:'PASS',checks,errors },null,2));
 } catch(e) { console.error(e); console.error((await page.locator('body').innerText()).slice(0,4500)); process.exitCode=1; } finally { await browser.close(); }
+

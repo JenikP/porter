@@ -1,0 +1,1 @@
+{"name":"@porter/driver-mobile","version":"0.1.0","private":true,"scripts":{"sync":"cap sync","android":"cap open android","ios":"cap open ios"},"dependencies":{"@capacitor/core":"^8.0.0","@capacitor/android":"^8.0.0","@capacitor/ios":"^8.0.0","@capacitor/camera":"^8.0.0","@capacitor/geolocation":"^8.0.0","@capacitor/push-notifications":"^8.0.0"}}

@@ -1,3 +1,4 @@
+import { AddressField } from '@porter/app-session';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMockPlatform } from '@porter/mock-platform';
@@ -20,13 +21,13 @@ export function BookingPage() {
   const recommended = recommendVehicle(draft.size, draft.weight * draft.quantity, draft.helper);
   useEffect(() => { sessionStorage.setItem('porter.booking', JSON.stringify(draft)); }, [draft]);
   const patch = (values: Partial<BookingDraft>) => setDraft(d => ({ ...d, ...values }));
-  const generateQuote = () => {
+  const generateQuote = async () => {
     if (failedJob) { setError('The saved booking total is locked. Retry payment using the same amount.'); return quote; }
     const rate = p.rateCards.filter(r => r.effectiveFrom <= new Date()).sort((a,b) => b.effectiveFrom.getTime() - a.effectiveFrom.getTime() || b.version - a.version)[0];
     const distanceKm = /docklands/i.test(draft.dropoff) ? 3.2 : /southbank/i.test(draft.dropoff) ? 4.1 : /richmond/i.test(draft.dropoff) ? 6.5 : /carlton/i.test(draft.dropoff) ? 4.8 : 7.2;
     const durationMinutes = Math.ceil(distanceKm * 3 + 8);
     const priceBreakdown = calculatePrice({ vehicleClass: draft.vehicle, distanceKm, durationMinutes, timeOption: draft.speed, stairs: draft.stairs, helperRequired: draft.helper, rateCard: rate.values });
-    const q = p.createQuote({ customerId: p.customers[0].id, pickupAddress: draft.pickup, dropoffAddress: draft.dropoff, vehicleClass: draft.vehicle, timeOption: draft.speed, stairs: draft.stairs, helperRequired: draft.helper, distanceKm, durationMinutes, priceBreakdown, price: priceBreakdown.total, rateCardVersionId: rate.id, expiresAt: new Date(Date.now() + 15 * 60000), validUntil: new Date(Date.now() + 15 * 60000) });
+    const q = await p.createQuote({ customerId: p.customers[0].id, pickupAddress: draft.pickup, dropoffAddress: draft.dropoff, vehicleClass: draft.vehicle, timeOption: draft.speed, stairs: draft.stairs, helperRequired: draft.helper, distanceKm, durationMinutes, priceBreakdown, price: priceBreakdown.total, rateCardVersionId: rate.id, expiresAt: new Date(Date.now() + 15 * 60000), validUntil: new Date(Date.now() + 15 * 60000) });
     setQuote(q); return q;
   };
   const pay = async () => {
@@ -36,10 +37,10 @@ export function BookingPage() {
     try {
       let jobId = failedJob;
       if (jobId) {
-        p.authorizePayment({ jobId, customerId: p.customers[0].id, amount: quote.price, fail: failPayment });
-        if (!failPayment) { p.returnJobToSearching(jobId, 'Payment retry authorized'); p.searchDrivers(jobId); }
+        await p.authorizePayment({ jobId, customerId: p.customers[0].id, amount: quote.price, fail: failPayment });
+        if (!failPayment) { await p.returnJobToSearching(jobId, 'Payment retry authorized'); await p.searchDrivers(jobId); }
       } else {
-        const result = p.bookDelivery({ customerId: p.customers[0].id, quote, item: { description: draft.description, size: draft.size, weightKg: draft.weight, quantity: draft.quantity, photos: draft.photos, notes: draft.notes }, jobFields: { pickupNotes: draft.pickupNotes, dropoffNotes: draft.dropoffNotes, recipientName: draft.recipientName || 'Alex Morgan', recipientPhone: draft.recipientPhone || '0412 345 678', recipientCode: '2468' }, paymentFail: failPayment });
+        const result = await p.bookDelivery({ customerId: p.customers[0].id, quote, item: { description: draft.description, size: draft.size, weightKg: draft.weight, quantity: draft.quantity, photos: draft.photos, notes: draft.notes }, jobFields: { pickupNotes: draft.pickupNotes, dropoffNotes: draft.dropoffNotes, recipientName: draft.recipientName || p.customers[0].name || 'Recipient', recipientPhone: draft.recipientPhone || p.customers[0].phone || '', recipientCode: '2468' }, paymentFail: failPayment });
         jobId = result.job.id;
       }
       if (failPayment) { setFailedJob(jobId); setError('Mock payment declined. Select success and retry. No driver search started.'); }
@@ -47,11 +48,11 @@ export function BookingPage() {
     } catch (e) { setError(e instanceof Error ? e.message : 'Unable to simulate payment. Retry.'); }
     finally { setBusy(false); }
   };
-  const next = () => {
+  const next = async () => {
     if (draft.pickup.trim().length < 10 || draft.dropoff.trim().length < 10 || draft.pickup.trim().toLowerCase() === draft.dropoff.trim().toLowerCase()) { setError('Enter two different complete Melbourne addresses.'); return; }
     if (draft.step === 1 && (!draft.description.trim() || draft.weight <= 0 || draft.weight * draft.quantity > 500 || draft.quantity < 1)) { setError('Describe the item and enter a positive weight and quantity, up to 500 kg total.'); return; }
     if (draft.step === 2 && (draft.stairs < 0 || draft.stairs > 10 || (draft.otherRecipient && (!draft.recipientName.trim() || !/^(?:\+61|0)4\d{8}$/.test(draft.recipientPhone.replace(/\s/g, '')))))) { setError('Use 0–10 flights and provide a recipient name and valid Australian mobile number.'); return; }
-    if (draft.step === 3) generateQuote();
+    if (draft.step === 3) { setBusy(true); try { await generateQuote(); } catch(e) { setError(e instanceof Error ? e.message : "Unable to calculate quote"); return; } finally { setBusy(false); } }
     if (draft.step === 4 && (!quote || quote.expiresAt.getTime() <= Date.now())) { setError('Quote expired. Refresh the quote before continuing.'); return; }
     setError(''); patch({ step: draft.step + 1, ...(draft.step === 2 ? { vehicle: recommended } : {}) });
   };
@@ -61,7 +62,7 @@ export function BookingPage() {
     const photos = await Promise.all(Array.from(files).map(f => new Promise<string>((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = reject; reader.readAsDataURL(f); })));
     patch({ photos: [...draft.photos, ...photos] }); setError('');
   };
-  let content = <><label>Pickup address<input value={draft.pickup} onChange={e => patch({ pickup: e.target.value })} autoComplete="street-address" required /></label><label>Drop-off address<input value={draft.dropoff} onChange={e => patch({ dropoff: e.target.value })} required /></label><h3>Use a saved address</h3><div className="actions">{p.customers[0]?.savedAddresses.map(a => <button className="secondary" key={a.label} onClick={() => patch({ dropoff: a.address })}>{a.label}</button>)}</div><div className="map-sim" aria-label="Simulated Melbourne service map"><span>Melbourne CBD</span><b>● Pickup ━━━━━ ● Drop-off</b><small>Illustrative route · no live maps</small></div></>;
+  let content = <><AddressField label="Pickup address" value={draft.pickup} onChange={pickup=>patch({pickup})}/><AddressField label="Drop-off address" value={draft.dropoff} onChange={dropoff=>patch({dropoff})}/><h3>Use a saved address</h3><div className="actions">{p.customers[0]?.savedAddresses.map(a => <button className="secondary" key={a.label} onClick={() => patch({ dropoff: a.address })}>{a.label}</button>)}</div><div className="map-sim" aria-label="Simulated Melbourne service map"><span>Melbourne CBD</span><b>● Pickup ━━━━━ ● Drop-off</b><small>Illustrative route · no live maps</small></div></>;
   if (draft.step === 1) content = <><label>Item description<textarea value={draft.description} onChange={e => patch({ description: e.target.value })} placeholder="Two boxed lamps from a Carlton shop" required /></label><fieldset><legend>Item size</legend><div className="item-size-cards">{Object.values(ItemSize).map(s=><label className="selection-card" key={s}><input type="radio" name="item-size" checked={draft.size===s} onChange={()=>patch({size:s})}/>{s.toLowerCase()}</label>)}</div></fieldset><div className="grid"><label>Weight per item (kg)<input type="number" min="0.1" max="500" step="0.1" value={draft.weight} onChange={e => patch({ weight: Number(e.target.value) })}/></label><label>Quantity<input type="number" min="1" max="100" value={draft.quantity} onChange={e => patch({ quantity: Number(e.target.value) })}/></label></div><label>Item photos · up to five<input type="file" accept="image/*" multiple onChange={e => void uploadPhotos(e.target.files)}/></label><div className="grid">{draft.photos.map((src,i) => <div key={i}><img className="proof" src={src} alt={`Item photo ${i + 1}`}/><button className="secondary" onClick={() => patch({ photos: draft.photos.filter((_,n) => n !== i) })}>Remove photo {i + 1}</button></div>)}</div><label>Pickup notes<textarea value={draft.pickupNotes} onChange={e => patch({ pickupNotes: e.target.value })}/></label><label>Drop-off notes<textarea value={draft.dropoffNotes} onChange={e => patch({ dropoffNotes: e.target.value })}/></label></>;
   if (draft.step === 2) content = <><label>Stair flights<input type="number" min="0" max="10" value={draft.stairs} onChange={e => patch({ stairs: Number(e.target.value) })}/></label><label><input type="checkbox" checked={draft.helper} onChange={e => patch({ helper: e.target.checked })}/>Second person for lifting</label><fieldset><legend>Delivery speed</legend>{[[TimeOption.FLEXIBLE_WINDOW, 'Flexible'], [TimeOption.WITHIN_3_HOURS, 'Within 3 Hours'], [TimeOption.WITHIN_1_HOUR, 'Within 1 Hour']].map(([value,label]) => <label key={value}><input type="radio" name="speed" checked={draft.speed === value} onChange={() => patch({ speed: value as TimeOption })}/>{label}</label>)}</fieldset><label>Additional delivery notes<textarea value={draft.notes} onChange={e => patch({ notes: e.target.value })}/></label><label><input type="checkbox" checked={draft.otherRecipient} onChange={e => patch({ otherRecipient: e.target.checked })}/>Booking for someone else</label>{draft.otherRecipient && <><label>Recipient name<input value={draft.recipientName} onChange={e => patch({ recipientName: e.target.value })}/></label><label>Recipient mobile<input type="tel" placeholder="0412 345 678" value={draft.recipientPhone} onChange={e => patch({ recipientPhone: e.target.value })}/></label></>}</>;
   if (draft.step === 3) content = <><p className="success">Recommended: {getVehicleLabel(recommended)}</p><p className="muted">Based on {draft.size.toLowerCase()} items, {draft.weight * draft.quantity} kg total and {draft.helper ? 'two-person' : 'one-person'} handling. Prototype thresholds: car 30 kg, van 500 kg.</p>{Object.values(VehicleClass).map(v => <label className="selection-card" key={v}><Icon name="truck"/><input type="radio" name="vehicle" disabled={recommended === VehicleClass.VAN_OR_UTE && v === VehicleClass.BIKE_OR_CAR} checked={draft.vehicle === v} onChange={() => patch({ vehicle: v })}/>{getVehicleLabel(v)}{v === recommended ? ' · recommended' : ' · larger vehicle'}</label>)}</>;
@@ -76,6 +77,9 @@ export function BookingPage() {
     <div className="booking-actions"><Button disabled={busy || !!failedJob} variant="secondary" onClick={() => { setQuote(undefined); draft.step ? patch({ step: draft.step - 1 }) : navigate('/'); }}>Back</Button><Button disabled={busy} onClick={draft.step === 5 ? () => void pay() : next}>{busy ? 'Authorizing…' : draft.step === 5 ? failedJob ? 'Retry payment' : 'Confirm mock payment' : 'Continue'}</Button></div>
   </div>;
 }
+
+
+
 
 
 

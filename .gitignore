@@ -36,6 +36,7 @@ id_ed25519*
 .codex/
 .agents/
 .cache/
+.data/
 .vite/
 .turbo/
 .parcel-cache/
@@ -65,3 +66,14 @@ Thumbs.db
 Desktop.ini
 .idea/
 .vscode/
+# Native SDK output and local signing/provider configuration
+**/.gradle/
+**/DerivedData/
+**/xcuserdata/
+**/local.properties
+**/google-services.json
+**/GoogleService-Info.plist
+**/android/app/src/main/assets/public/
+**/ios/App/App/public/
+**/ios/App/App/capacitor.config.json
+**/android/app/src/main/assets/capacitor.config.json

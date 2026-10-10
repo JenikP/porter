@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Three independent branded access screens; desktop/mobile, no role selector or admin links",
+    "Customer/business and Driver registration/onboarding; dedicated Admin login with own identities",
+    "Logout and role enforcement; customer cannot enter an admin session",
+    "Private document uploads, central Admin review/approval, eligible driver online",
+    "Customer booking/server-calculated quote/payment; another browser receives/accepts offer and assignment updates",
+    "Foreground geolocation consent saves central coordinates visible only to the relevant customer; address suggestions return Melbourne data",
+    "Ownership, profile privilege escalation and pricing/quote forgery blocked server-side",
+    "Signed payment confirmation webhook accepts repeated events without double credit; forged signature rejected",
+    "Ordered driver delivery, actual image proofs, recipient verification and central earnings/payout accrual",
+    "Customer rating/dispute Under Review; independent Admin resolution updates refund and driver adjustment",
+    "Refresh and logout/re-login retain account-specific delivery and financial records",
+    "Manager payout processing persists once, rate publication changes new quotes only, reports/CSV and audit retain central records",
+    "Second independently registered/approved driver receives central admin reassignment; concurrent offer acceptance succeeds once and cancellation remains consistent",
+    "Idempotency, Support/Manager permission differences and expired-document online blocking",
+    "Single-use password recovery and reset through the labeled development email simulator",
+    "Database records and sessions survive a central API process restart",
+    "Distinct mobile manifests; offline shell contains no private records; notification outbox is explicitly SIMULATED and central health is clear",
+    "No browser runtime errors; connected desktop/mobile screens"
+  ],
+  "errors": [],
+  "generatedAt": "2026-10-10T13:25:05.453Z"
+}
