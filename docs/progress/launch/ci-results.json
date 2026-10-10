@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "url": "https://github.com/JenikP/porter/actions/runs/38056890011",
+  "database": "PostgreSQL 17",
+  "steps": [
+    {
+      "name": "Set up job",
+      "conclusion": "success"
+    },
+    {
+      "name": "Initialize containers",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/setup-node@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm ci",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run typecheck",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run build",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm test",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:providers",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npx playwright install --with-deps chromium",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:launch",
+      "conclusion": "success"
+    },
+    {
+      "name": "Validate deployment images",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/upload-artifact@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/setup-node@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Stop containers",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ],
+  "commit": "c13ea3928d412af6659459f00bca894db58bb38a"
+}

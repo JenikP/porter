@@ -13,3 +13,5 @@ Executed: `npm run typecheck` PASS; `node scripts/build-api.mjs` PASS; `node scr
 External dependencies: production PostgreSQL, HTTPS domains, email delivery and secure deployment secrets. Recovery tokens appear in development links only; production refuses simulated recovery delivery. Payment/maps/notification channels remain labelled simulators. Cookie deployment settings, MFA, distributed rate limits, normalized migrations, retention, backup/restore and a full security review remain launch work.
 
 PostgreSQL CI evidence: https://github.com/JenikP/porter/actions/runs/38055860622 — all steps PASS, including npm ci, typecheck, build, domain/provider tests and multi-browser acceptance. Later edits add lost-response coverage; their final CI status is recorded separately.
+
+Final PostgreSQL CI: run 38056890011 PASS on c13ea39, including active-delivery coordinate privacy, notification preferences and lost-response recovery.

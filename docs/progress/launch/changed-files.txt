@@ -213,6 +213,7 @@ docs/progress/launch/admin-connected-mobile.png
 docs/progress/launch/admin-sign-in-desktop.png
 docs/progress/launch/admin-sign-in-mobile.png
 docs/progress/launch/changed-files.txt
+docs/progress/launch/ci-results.json
 docs/progress/launch/concepts/customer-sign-in.png
 docs/progress/launch/customer-connected-desktop.png
 docs/progress/launch/customer-connected-mobile.png
