@@ -39,4 +39,3 @@ export function JobDetail({jobId,admin=false}:{jobId?:string;admin?:boolean}) {
   {error&&<p className="error" role="alert">{error}</p>}
  </div>;
 }
-

@@ -20,4 +20,3 @@ try{
  await page.goto(base+'/account');await click('Request account deletion');await page.getByRole('dialog').waitFor();assert.equal(await page.locator(':focus').innerText(),'Keep account');await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);assert.equal(await page.locator(':focus').innerText(),'Request account deletion');checks.push('Dialog focus and Escape restore');
  assert.deepEqual(errors,[]);fs.writeFileSync('docs/progress/ux-check-results.json',JSON.stringify({status:'PASS',checks,errors},null,2));console.log('PASS',checks);
 }finally{await browser.close();}
-

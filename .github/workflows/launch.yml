@@ -1,5 +1,8 @@
 name: Porter launch checks
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore: ['docs/**', 'README.md', 'BUILD-STATUS.md']
+  pull_request:
 permissions:
   contents: read
 jobs:
@@ -32,6 +35,12 @@ jobs:
       - run: npm run test:providers
       - run: npx playwright install --with-deps chromium
       - run: npm run test:launch
+      - name: Validate deployment images
+        run: |
+          docker build -f deploy/Dockerfile.api -t porter-api:ci .
+          for app in customer driver admin; do
+            docker build -f deploy/Dockerfile.web --build-arg APP=$app -t porter-$app:ci .
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -22,4 +22,3 @@ export function ActiveJob({ job, run }: { job: Job; run: (f: () => void) => void
  <details><summary>Report a problem / failed handover</summary><label>What happened?<textarea value={problem} onChange={e => setProblem(e.target.value)}/></label><div className="actions">{[['Failed pickup',DisputeReason.FAILED_PICKUP],['Failed delivery',DisputeReason.FAILED_DELIVERY],['Report problem',DisputeReason.OTHER]].map(([label,reason]) => <button key={label} className="secondary" disabled={!problem.trim()} onClick={() => run(async () => await p.createDispute({ jobId: job.id, reason: reason as DisputeReason, description: problem }))}>{label}</button>)}</div></details>
  </section>;
 }
-

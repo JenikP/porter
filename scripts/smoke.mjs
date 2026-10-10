@@ -19,4 +19,3 @@ try {
  await page.goto('http://127.0.0.1:5176/'); await page.keyboard.press('Tab'); assert.equal(await page.locator(':focus').innerText(),'Skip to content'); checks.push('Keyboard skip link available');
  assert.deepEqual(errors,[]); fs.writeFileSync('docs/progress/smoke-results.json',JSON.stringify({ status:'PASS',checks,errors,viewports:[1440,390,320] },null,2)); console.log('PASS:',checks.length,'responsive screen / label / keyboard checks; no console errors');
 } catch(e) { console.error(e); console.error((await page.locator('body').innerText()).slice(0,4000)); process.exitCode=1; } finally { await browser.close(); }
-

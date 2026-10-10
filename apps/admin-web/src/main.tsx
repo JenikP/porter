@@ -11,4 +11,3 @@ createRoot(document.getElementById('root')!).render(
     <Application role="admin"><App /></Application>
   </BrowserRouter></PlatformErrorBoundary>,
 );
-

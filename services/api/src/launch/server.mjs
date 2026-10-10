@@ -126,7 +126,7 @@ const server=http.createServer(async(req,res)=>{
     }
     if(url.pathname==='/api/addresses'&&req.method==='GET'){
       const search=String(url.searchParams.get('q')||'').trim();requireRule(search.length>=3&&search.length<=200,'Enter at least three characters',400);
-      if(process.env.ADDRESS_SEARCH_URL){const response=await fetch(`${process.env.ADDRESS_SEARCH_URL}?q=${encodeURIComponent(search)}`,{headers:{Authorization:`Bearer ${process.env.ROUTING_TOKEN||''}`},signal:AbortSignal.timeout(8000)});requireRule(response.ok,'Address search unavailable',503);respond(200,{provider:'configured-http',addresses:await response.json()});}
+      if(process.env.ADDRESS_SEARCH_URL){const target=new URL(process.env.ADDRESS_SEARCH_URL);target.searchParams.set('q',search);const response=await fetch(target,{headers:{Authorization:`Bearer ${process.env.ROUTING_TOKEN||''}`},signal:AbortSignal.timeout(8000)});requireRule(response.ok,'Address search unavailable',503);const addresses=await response.json();requireRule(Array.isArray(addresses)&&addresses.length<=50&&addresses.every(a=>typeof a==='string'&&a.length<=500),'Invalid address provider response',503);respond(200,{provider:'configured-http',addresses});}
       else respond(200,{provider:'Melbourne development simulator',addresses:['120 Collins St, Melbourne VIC 3000','700 Bourke St, Docklands VIC 3008','1 Southbank Blvd, Southbank VIC 3006','285 Russell St, Melbourne VIC 3000','200 Victoria St, Richmond VIC 3121','73 Nicholson St, Footscray VIC 3011'].filter(a=>a.toLowerCase().includes(search.toLowerCase()))});return;
     }
     if(url.pathname==='/api/location'&&req.method==='POST'){

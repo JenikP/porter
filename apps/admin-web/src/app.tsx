@@ -37,6 +37,3 @@ export function App() {
   {tab === 'Audit Log' && <Audit/>}
  </main></div></PlatformGate>;
 }
-
-
-

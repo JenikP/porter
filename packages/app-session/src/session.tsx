@@ -93,4 +93,3 @@ function CustomerOnboarding({onComplete}:{onComplete:()=>Promise<void>}){
  const [error,setError]=useState('');const [busy,setBusy]=useState(false);
  return <main className="role-page onboarding"><section className="panel"><h1>Welcome to Porter</h1><p>Your account is ready. Add saved addresses and business details in Account, then book your first delivery.</p><ol><li>Choose pickup and drop-off addresses.</li><li>Describe your item and review a fixed quote.</li><li>Track your delivery and both handovers.</li></ol><p className="muted">Payments, routing and notifications currently run through development simulators.</p><button className="primary" disabled={busy} onClick={async()=>{setBusy(true);try{await onComplete();}catch(e){setError(String(e));}finally{setBusy(false);}}}>Go to my dashboard</button>{error&&<p role="alert">{error}</p>}</section></main>;
 }
-

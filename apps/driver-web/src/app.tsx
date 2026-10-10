@@ -37,5 +37,3 @@ export function App() {
   <nav className="driver-nav" aria-label="Driver navigation">{driverTabs.map(([title,icon])=><button key={title} aria-current={tab===title?'page':undefined} onClick={()=>setTab(title)}><Icon name={icon}/><span>{title}</span></button>)}</nav>
  </main></PlatformGate>;
 }
-
-

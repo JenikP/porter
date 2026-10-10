@@ -16,4 +16,3 @@ try {
  assert.deepEqual(errors,[]);
  fs.writeFileSync('docs/progress/intervention-results.json',JSON.stringify({ status:'PASS',checks:['Driver cancellation returns job to searching','Admin assigns another eligible driver','Customer sees reassigned driver','Second driver sees active assignment','Cancellation count and audit persisted','No browser errors'] },null,2)); console.log('PASS: all reassignment intervention checks');
 } catch(e) { console.error(e); console.error((await page.locator('body').innerText()).slice(0,4500)); process.exitCode=1; } finally { await browser.close(); }
-

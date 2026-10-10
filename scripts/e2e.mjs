@@ -56,4 +56,3 @@ try {
  console.error(error); console.error('URL',page.url()); console.error((await page.locator('body').innerText()).slice(0,6000));
  fs.writeFileSync('docs/progress/e2e-results.json',JSON.stringify({ status:'FAIL',checks,errors,error:String(error) },null,2)); process.exitCode=1;
 } finally { await browser.close(); }
-

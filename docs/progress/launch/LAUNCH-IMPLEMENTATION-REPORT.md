@@ -13,7 +13,7 @@ Normal apps use API state, not localStorage marketplace records or demo account 
 | Phase | Status | Evidence and boundary |
 |---|---|---|
 | 1 — separate applications | PASS | Independent branded access, own-account routing, approval, logout and role enforcement verified |
-| 2 — central data/auth | PARTIAL | Local persistence/authorization PASS; PostgreSQL CI prepared, production security/migrations/hosting remain |
+| 2 — central data/auth | PASS | SQLite and PostgreSQL central persistence/authorization acceptance PASS; release security/migrations/hosting remain |
 | 3 — customer | PARTIAL | Central booking-to-dispute lifecycle PASS; real routing/maps/payment integration remains |
 | 4 — driver | PARTIAL | Central onboarding/offers/proofs/earnings/GPS PASS; native device/background/provider verification remains |
 | 5 — operations | PARTIAL | Review, two-driver dispatch, finance, pricing snapshots, reports/CSV and audit PASS locally; hosted operations controls remain |
@@ -29,7 +29,7 @@ All seven phase reports are under this directory. Full source inventory is [chan
 - `npm test`: 18 domain/invariant tests pass.
 - `npm run test:providers`: HTTP fixture contract test passes for routing/recovery, financial operations and EMAIL/SMS/PUSH; unavailable provider errors and stable keys asserted.
 - Preserved-demo `npm run test:e2e`: all five suites pass, including full lifecycle, reassignment, 64 responsive/label/keyboard screen checks, error/loading/empty states and forms.
-- Production-bundle `node scripts/production-smoke.mjs`: 18 acceptance groups pass across independent browser contexts. The scenario includes Customer A registration/booking/payment, Driver B approval/acceptance/proofs/completion, Customer A updates/rating/Under Review, Admin C refund decision, refresh/re-login/API restart, unrelated-account isolation, concurrent acceptance, Driver C central reassignment, payout duplication rejection, quote snapshots, document expiry, signed webhook replay, foreground GPS consent and offline recovery.
+- Production-bundle `node scripts/production-smoke.mjs`: 19 acceptance groups pass across independent browser contexts. The scenario includes Customer A registration/booking/payment, Driver B approval/acceptance/proofs/completion, Customer A updates/rating/Under Review, Admin C refund decision, refresh/re-login/API restart, unrelated-account isolation, concurrent acceptance, Driver C central reassignment, payout duplication rejection, quote snapshots, document expiry, signed webhook replay, foreground GPS consent and offline recovery.
 - Both native workspace `sync` commands succeed for generated Android/iOS projects and camera/geolocation/push plugins. No APK/IPA or physical device test is claimed.
 
 Browser plugin was unavailable, so Playwright with Edge was used. Desktop/mobile screenshots and [acceptance-results.json](acceptance-results.json) record real loaded screens. Final auth/customer/driver/admin screenshots were visually inspected; transient restart errors were corrected/recovered before final capture.
@@ -42,10 +42,12 @@ The generated customer sign-in concept is retained in `concepts/customer-sign-in
 
 Genuinely connected locally: account authentication, private sessions and uploads, ownership/permissions, all marketplace/financial records, foreground GPS coordinates, independent-app polling, central admin decisions, persistence and audit. In-app notifications and delivery queue are real stored records. SQLite is a real development database.
 
-Simulated by default: payment authorization/capture/refund/payout settlement, route distance/ETA/address suggestions, recovery mail and outbound delivery channels. HTTP adapters were tested with fixtures, not real merchant/maps/mail/SMS/APNs/FCM accounts. Map graphics are illustrative. Native camera/GPS/push bridge code exists but device/provider receipt is unverified. Docker/HTTPS deployment has not run here. PostgreSQL CI status must be checked before claiming its adapter verified.
+Simulated by default: payment authorization/capture/refund/payout settlement, route distance/ETA/address suggestions, recovery mail and outbound delivery channels. HTTP adapters were tested with fixtures, not real merchant/maps/mail/SMS/APNs/FCM accounts. Map graphics are illustrative. Native camera/GPS/push bridge code exists but device/provider receipt is unverified. Docker/HTTPS deployment has not run here. PostgreSQL 17 CI acceptance passed in run 38055860622; no production database is provisioned.
 
 Remaining release work is explicit in [LAUNCH-READINESS.md](../../LAUNCH-READINESS.md): hosted API/database/backups, provider sandboxes/tokenization/reconciliation, precise service-area routing/maps, security and data retention controls, native SDK/signing/device tests and background-location consent, operational/legal/privacy/insurance/store approvals. Aggregate marketplace storage is transactional but needs normalized/indexed migrations before scale. No real-customer launch PASS is recorded.
 
 ## Resume
 
-Keep this branch and the preserved demo. Run the PostgreSQL CI gate, then provision gateway sandboxes and HTTPS staging without exposing secrets. Repeat the same independent-browser lifecycle against staging and the native real-device matrix. Read [runbook](../../LAUNCH-RUNBOOK.md) and [mobile setup](../../MOBILE-FOUNDATIONS.md) before deploying. Do not repeat completed prototype tasks or silently mark external gates complete.
+Keep this branch and the preserved demo. Retain the passing PostgreSQL CI gate for future changes, then provision gateway sandboxes and HTTPS staging without exposing secrets. Repeat the same independent-browser lifecycle against staging and the native real-device matrix. Read [runbook](../../LAUNCH-RUNBOOK.md) and [mobile setup](../../MOBILE-FOUNDATIONS.md) before deploying. Do not repeat completed prototype tasks or silently mark external gates complete.
+
+CI evidence: [PostgreSQL acceptance run](https://github.com/JenikP/porter/actions/runs/38055860622) PASS for commit 0740525. Credential review found only documented placeholder/template URLs and the disposable CI database password; no live tokens, keys or personal credentials were staged.

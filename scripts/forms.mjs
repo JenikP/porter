@@ -19,4 +19,3 @@ try {
  await click('Customer'); await page.goto('http://127.0.0.1:5176/account'); await click('Request account deletion'); await click('Confirm deletion request'); await page.getByRole('heading',{ name:'Account deletion requested',exact:true }).waitFor(); await click('Restore demo account'); record('Account deletion and demo restoration');
  assert.deepEqual(errors,[]); fs.writeFileSync('docs/progress/form-results.json',JSON.stringify({ status:'PASS',checks,errors },null,2));
 } catch(e) { console.error(e); console.error((await page.locator('body').innerText()).slice(0,5000)); process.exitCode=1; } finally { await browser.close(); }
-

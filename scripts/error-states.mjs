@@ -19,4 +19,3 @@ try {
  await click('Admin'); await click('Jobs'); await page.getByLabel('Search jobs').fill('NO-SUCH-DELIVERY'); await page.getByText('No jobs match these filters.',{ exact:true }).waitFor(); await click('Disputes'); await page.getByText(/No disputes match this view/).waitFor(); record('Admin empty search and dispute states');
  assert.deepEqual(errors,[]); fs.writeFileSync('docs/progress/error-state-results.json',JSON.stringify({ status:'PASS',checks,errors },null,2));
 } catch(e) { console.error(e); console.error((await page.locator('body').innerText()).slice(0,4500)); process.exitCode=1; } finally { await browser.close(); }
-

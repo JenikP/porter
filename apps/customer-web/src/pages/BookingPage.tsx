@@ -77,9 +77,3 @@ export function BookingPage() {
     <div className="booking-actions"><Button disabled={busy || !!failedJob} variant="secondary" onClick={() => { setQuote(undefined); draft.step ? patch({ step: draft.step - 1 }) : navigate('/'); }}>Back</Button><Button disabled={busy} onClick={draft.step === 5 ? () => void pay() : next}>{busy ? 'Authorizing…' : draft.step === 5 ? failedJob ? 'Retry payment' : 'Confirm mock payment' : 'Continue'}</Button></div>
   </div>;
 }
-
-
-
-
-
-

@@ -11,6 +11,7 @@ apps/admin-web/src/Drivers.tsx
 apps/admin-web/src/Jobs.tsx
 apps/admin-web/src/main.tsx
 apps/admin-web/src/Monitoring.tsx
+apps/admin-web/src/Overview.tsx
 apps/admin-web/src/Payments.tsx
 apps/admin-web/src/Pricing.tsx
 apps/admin-web/src/Sidebar.tsx

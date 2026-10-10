@@ -12,4 +12,3 @@ createRoot(document.getElementById('root')!).render(
     <Application role="driver"><App /></Application>
   </BrowserRouter></PlatformErrorBoundary>,
 );
-
