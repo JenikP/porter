@@ -51,7 +51,7 @@ export function scopedState(user, state) {
   const drivers = state.drivers.filter(d => customer ? jobs.some(j => j.driverId === d.id) : d.id === id);
   return {
     customers: customer ? state.customers.filter(c => c.id === id) : [],
-    drivers: customer ? drivers.map(d => pick(d, ['id','name','rating','approvalStatus','location'])) : drivers,
+    drivers: customer ? drivers.map(d => pick(d, ['id','name','rating','approvalStatus',...(jobs.some(j=>j.driverId===d.id&&['ASSIGNED','EN_ROUTE_TO_PICKUP','AT_PICKUP','PICKED_UP','EN_ROUTE_TO_DROPOFF','AT_DROPOFF','DELIVERED'].includes(j.status))?['location']:[])])) : drivers,
     vehicles: state.vehicles.filter(v => drivers.some(d => d.id === v.driverId)).map(v => customer ? pick(v, ['id','driverId','type','make','model','plate']) : v),
     jobs: jobs.map(j => {
       if (!customer && j.driverId !== id) return { ...pick(j,['id','status','vehicleClass','timeOption','estimatedDistanceKm','estimatedDurationMinutes','createdAt','updatedAt']),pickupAddress:area(j.pickupAddress),dropoffAddress:area(j.dropoffAddress),customerId:'',price:0,driverEarnings:0 };
@@ -66,7 +66,7 @@ export function scopedState(user, state) {
     payouts: customer ? [] : state.payouts.filter(p => p.driverId === id),
     disputes: state.disputes.filter(d => jobIds.has(d.jobId) && (customer || jobs.some(j => j.id === d.jobId && j.driverId === id))),
     ratings: state.ratings.filter(r => jobIds.has(r.jobId)),
-    notifications: state.notifications.filter(n => n.userId === user.id),
+    notifications: state.notifications.filter(n => n.userId === user.id && (!customer || state.customers.find(c=>c.id===id)?.notificationsEnabled!==false)),
     driverDocuments: customer ? [] : state.driverDocuments.filter(d => d.driverId === id),
     jobProofs: state.jobProofs.filter(p => jobIds.has(p.jobId) && (customer || jobs.some(j => j.id === p.jobId && j.driverId === id))),
     auditLogs: [],
