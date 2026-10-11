@@ -4,6 +4,7 @@
     "Three independent branded access screens; desktop/mobile, no role selector or admin links",
     "Customer/business and Driver registration/onboarding; dedicated Admin login with own identities",
     "Logout and role enforcement; customer cannot enter an admin session",
+    "Delayed draft save cannot overwrite subsequent profile edits; latest draft persists centrally",
     "New driver saves profile; terms gate enforced by UI and API; timestamp/version and progress survive refresh",
     "800 KB PDF and all required files saved; storage error/retry, file signature validation, admin preview, rejection, changes request and replacement/resubmission",
     "Private document uploads, central Admin review/approval, eligible driver online",
@@ -27,5 +28,5 @@
     "No browser runtime errors; connected desktop/mobile screens"
   ],
   "errors": [],
-  "generatedAt": "2026-10-11T01:04:42.791Z"
+  "generatedAt": "2026-10-11T01:17:55.561Z"
 }

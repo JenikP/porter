@@ -1,5 +1,7 @@
 # Launch runbook
 
+For isolated testing deployment, use the newer [staging runbook](STAGING-RUNBOOK.md), which provides distinct HTTPS ingress, PostgreSQL/private-document volumes, simulator-only payment enforcement and backup/restore verification. PostgreSQL recovery and container/ingress configuration are verified in CI; no public staging environment has been provisioned.
+
 ## Applications and API
 
 Deploy only `apps/customer-web/dist`, `apps/driver-web/dist`, `apps/admin-web/dist` and `services/api/dist`. `npm run build:production` omits the connected demo. SPA routes must fall back to each app's `index.html`. Each app should proxy its own `/api` to the same central API so sessions remain first-party. The app header chooses the intended application; the server independently derives account role and ownership from a private session.

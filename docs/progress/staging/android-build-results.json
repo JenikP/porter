@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "jdk": 21,
+  "sdk": 36,
+  "artifacts": [
+    {
+      "role": "customer",
+      "path": "apps/customer-mobile/android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 10178721,
+      "sha256": "b48910b193ce2068b716673a98bfafeb485793b3baa8943c65531b6b39311210",
+      "status": "PASS",
+      "build": "assembleDebug",
+      "physicalDeviceTested": false
+    },
+    {
+      "role": "driver",
+      "path": "apps/driver-mobile/android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 10234934,
+      "sha256": "85e927b38436b05f691e3cc900d3a27067d787d4784981d316ea02f32de0455c",
+      "status": "PASS",
+      "build": "assembleDebug",
+      "physicalDeviceTested": false
+    }
+  ],
+  "ios": "NOT BUILT: macOS/Xcode required",
+  "generatedAt": "2026-10-11T01:17:57.949Z"
+}

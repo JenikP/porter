@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "httpStatus": 200,
+  "health": {
+    "status": "ok",
+    "database": "sqlite-development",
+    "documents": "private-local",
+    "environment": "development",
+    "requestId": "e4e96c13-b4be-4c4c-b61f-cca7d9304f51",
+    "payments": "simulator",
+    "routing": "simulator",
+    "notifications": "simulator"
+  },
+  "correlationHeader": true,
+  "generatedAt": "2026-10-11T01:13:27.928Z"
+}

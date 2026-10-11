@@ -1,5 +1,7 @@
 # Porter launch implementation checkpoint
 
+Latest checkpoint: see [driver onboarding repair](../DRIVER-ONBOARDING-REPORT.md) and [staging implementation](../STAGING-IMPLEMENTATION-REPORT.md). The earlier native-build limitation below is superseded: Customer and Driver debug APKs now compile with JDK 21 / SDK 36. Public HTTPS staging and physical-device acceptance remain pending.
+
 Verified 11 October 2026 (Australia/Sydney), branch `launch-development`. This is working launch development, not a declaration that Porter is ready for paying customers.
 
 ## Running software

@@ -14,6 +14,10 @@ Seven focused stages: personal/vehicle details; prototype terms; identity; licen
 
 PNG, JPEG, WebP and PDF files up to 5 MiB are accepted with byte-signature checking on the server. HEIC conversion guidance, filenames, image preview/PDF download, reading/saving progress, retry, removal and replacement are provided. Native camera access uses the existing permission adapter. Progress distinguishes file reading and secure saving; it is not a network byte-count progress meter.
 
+Mobile file pickers that return a blank/generic MIME type can use the supported filename extension; the server still verifies the actual byte signature. Upload requests allow 60 seconds on slower connections. Admin expiry editing and manual Mark expired actions are retained in the redesigned review panel.
+
+Profile saves are serialized and obsolete response handlers do not clear later edits. A delayed-response browser test verifies that the latest draft reaches central storage before navigation.
+
 `POST /api/driver/documents` derives the driver from the session and atomically records upload ownership, document category, filename, expiry and pending review metadata. Durable request keys prevent duplicate metadata after response loss/retry. Files go through a private local disk adapter or a configurable authenticated HTTPS object-storage gateway. Database upload records reference private objects; existing inline database files remain readable. Authenticated reads enforce owner/admin access; there is no public static document URL. Removal detaches a permitted draft document; replaced/detached file objects are retained for later retention cleanup rather than silently deleted.
 
 Application states are Draft, Pending Review, Changes Required, Approved and Rejected, with the existing suspension flag handled separately. File success does not imply application submission or approval. Submission validates profile, vehicle, current terms and all mandatory current evidence. Admin decisions require Manager privileges; Support can inspect but cannot approve. Individual rejection/request-info requires a reason. An entire application cannot be approved until it was submitted and every mandatory document is approved/current. Changes requests persist notes, notify the driver and disable online access. Replacement resets review; resubmission returns to Pending Review. Existing expiry/offline and offer-eligibility checks remain enforced.
@@ -40,6 +44,15 @@ Application states are Draft, Pending Review, Changes Required, Approved and Rej
 - Separate verification on the **running real local database** `.data/porter-launch.sqlite`: a genuinely new driver completes the wizard, uploads five 800 KB PDFs, submits, is reviewed/approved by the configured Manager, goes online/offline and signs out/in successfully. `onboarding/persistent-local-results.json` records this test without passwords. Existing marketplace records were preserved.
 
 Browser plugin was not available; Playwright/Edge was used. Screenshots: `onboarding/identity-mobile.png`, `review-mobile.png`, `admin-review.png`, `approved-local-admin.png`; design reference `design-concept.png`. Loaded screens were checked at 390×844 and 1440×1000, including overflow and functioning controls.
+
+| Rendered QA check | Result |
+|---|---|
+| Correct application page and meaningful content | PASS |
+| No blank page or framework error overlay | PASS |
+| Browser runtime errors | None |
+| Desktop/mobile overflow and keyboard/label regression | PASS |
+| Screenshot evidence after loaded actions | Saved in `onboarding/` |
+| Actual submission, correction, approval and eligibility interaction | PASS |
 
 ## Limitations
 
