@@ -42,8 +42,8 @@ jobs:
         run: |
           # Use PostgreSQL 17 tools from the same image as the database, avoiding runner client-version mismatch.
           mkdir -p .tmp-pg-client
-          printf '#!/bin/sh\nexec docker run --rm --network host -v "$PWD:$PWD" -w "$PWD" -e PGDATABASE -e PGHOST -e PGPORT -e PGUSER -e PGPASSWORD postgres:17-alpine pg_dump "$@"\n' > .tmp-pg-client/pg_dump
-          printf '#!/bin/sh\nexec docker run --rm --network host -v "$PWD:$PWD" -w "$PWD" -e PGDATABASE -e PGHOST -e PGPORT -e PGUSER -e PGPASSWORD postgres:17-alpine pg_restore "$@"\n' > .tmp-pg-client/pg_restore
+          printf '#!/bin/sh\nexec docker run --rm --user "$(id -u):$(id -g)" --network host -v "$PWD:$PWD" -w "$PWD" -e PGDATABASE -e PGHOST -e PGPORT -e PGUSER -e PGPASSWORD postgres:17-alpine pg_dump "$@"\n' > .tmp-pg-client/pg_dump
+          printf '#!/bin/sh\nexec docker run --rm --user "$(id -u):$(id -g)" --network host -v "$PWD:$PWD" -w "$PWD" -e PGDATABASE -e PGHOST -e PGPORT -e PGUSER -e PGPASSWORD postgres:17-alpine pg_restore "$@"\n' > .tmp-pg-client/pg_restore
           chmod +x .tmp-pg-client/*
           export PG_DUMP_BIN="$PWD/.tmp-pg-client/pg_dump" PG_RESTORE_BIN="$PWD/.tmp-pg-client/pg_restore"
           export DOCUMENT_STORAGE_PATH="$(find "$PWD" -maxdepth 2 -path '*/.tmp-launch-*/private-uploads' -type d | head -n 1)"

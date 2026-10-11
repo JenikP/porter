@@ -27,7 +27,7 @@ export function Application({role,children}:{role:Role;children:ReactNode}) {
  const [session,setSession]=useState<{user:SessionUser;csrf:string}|null>();const [error,setError]=useState('');const location=useLocation();const navigate=useNavigate();
  const base=(import.meta as unknown as {env?:Record<string,string>}).env?.VITE_API_URL || '/api';
  const request=async(path:string,body?:unknown,key?:string)=>{
-  const response=await fetch(`${base}${path}`,{credentials:'include',signal:AbortSignal.timeout(15000),method:body===undefined?'GET':'POST',headers:{'X-Porter-App':role,...(body!==undefined?{'Content-Type':'application/json','X-CSRF-Token':session?.csrf||''}:{}),...(key?{'Idempotency-Key':key}:{})},body:body===undefined?undefined:JSON.stringify(body)});
+  const response=await fetch(`${base}${path}`,{credentials:'include',signal:AbortSignal.timeout(['/driver/documents','/uploads'].includes(path)?60000:15000),method:body===undefined?'GET':'POST',headers:{'X-Porter-App':role,...(body!==undefined?{'Content-Type':'application/json','X-CSRF-Token':session?.csrf||''}:{}),...(key?{'Idempotency-Key':key}:{})},body:body===undefined?undefined:JSON.stringify(body)});
   let data;try{data=await response.json();}catch{throw new TypeError("Porter API is temporarily unavailable. Check your connection and retry.");}if(!response.ok){if(response.status===401&&path!=='/auth/login')setSession(null);throw new Error(data.error || 'Request failed');}if(body!==undefined&&path!=='/commands')window.dispatchEvent(new Event('porter:refresh'));return data;
  };
  useEffect(()=>{let active=true;request('/auth/me').then(data=>{if(active)setSession(data);}).catch(()=>{if(active)setSession(null);});return()=>{active=false;};},[]);
