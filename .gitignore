@@ -68,6 +68,7 @@ Desktop.ini
 .vscode/
 # Native SDK output and local signing/provider configuration
 **/.gradle/
+**/.kotlin/
 **/DerivedData/
 **/xcuserdata/
 **/local.properties

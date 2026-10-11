@@ -40,6 +40,12 @@ jobs:
           DATABASE_URL: postgres://porter_test:ci-disposable-database@127.0.0.1:5432/porter_test
           PORTER_RESTORE_DATABASE_URL: postgres://porter_test:ci-disposable-database@127.0.0.1:5432/porter_restore_test
         run: |
+          # Use PostgreSQL 17 tools from the same image as the database, avoiding runner client-version mismatch.
+          mkdir -p .tmp-pg-client
+          printf '#!/bin/sh\nexec docker run --rm --network host -v "$PWD:$PWD" -w "$PWD" -e PGDATABASE -e PGHOST -e PGPORT -e PGUSER -e PGPASSWORD postgres:17-alpine pg_dump "$@"\n' > .tmp-pg-client/pg_dump
+          printf '#!/bin/sh\nexec docker run --rm --network host -v "$PWD:$PWD" -w "$PWD" -e PGDATABASE -e PGHOST -e PGPORT -e PGUSER -e PGPASSWORD postgres:17-alpine pg_restore "$@"\n' > .tmp-pg-client/pg_restore
+          chmod +x .tmp-pg-client/*
+          export PG_DUMP_BIN="$PWD/.tmp-pg-client/pg_dump" PG_RESTORE_BIN="$PWD/.tmp-pg-client/pg_restore"
           export DOCUMENT_STORAGE_PATH="$(find "$PWD" -maxdepth 2 -path '*/.tmp-launch-*/private-uploads' -type d | head -n 1)"
           test -n "$DOCUMENT_STORAGE_PATH"
           PGPASSWORD=ci-disposable-database createdb -h 127.0.0.1 -U porter_test porter_restore_test
@@ -47,6 +53,8 @@ jobs:
           node scripts/staging-backup.mjs verify-restore .tmp-staging-backup
       - name: Validate deployment images
         run: |
+          CUSTOMER_HOST=customer.staging.example.test DRIVER_HOST=driver.staging.example.test ADMIN_HOST=operations.staging.example.test API_HOSTNAME=api.staging.example.test ACME_EMAIL=qa@example.test POSTGRES_PASSWORD=ci-disposable-database BOOTSTRAP_ADMIN_EMAIL=qa@example.test BOOTSTRAP_ADMIN_PASSWORD=ci-disposable-admin APP_ORIGINS=https://customer.staging.example.test,https://driver.staging.example.test,https://operations.staging.example.test docker compose -f deploy/staging.compose.yaml config --quiet
+          docker run --rm -v "$PWD/deploy/Caddyfile.staging:/etc/caddy/Caddyfile:ro" -e CUSTOMER_HOST=customer.staging.example.test -e DRIVER_HOST=driver.staging.example.test -e ADMIN_HOST=operations.staging.example.test -e API_HOSTNAME=api.staging.example.test -e ACME_EMAIL=qa@example.test caddy:2-alpine caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
           docker build -f deploy/Dockerfile.api -t porter-api:ci .
           for app in customer driver admin; do
             docker build -f deploy/Dockerfile.web --build-arg APP=$app -t porter-$app:ci .
