@@ -32,6 +32,8 @@ services:
       NOTIFICATION_CHANNELS: ${NOTIFICATION_CHANNELS:-}
       NATIVE_ORIGINS: ${NATIVE_ORIGINS:-}
       SESSION_CROSS_SITE: ${SESSION_CROSS_SITE:-false}
+      DOCUMENT_STORAGE_PATH: /data/private-uploads
+    volumes: ["porter-documents:/data/private-uploads"]
     depends_on:
       database: {condition: service_healthy}
   customer:
@@ -48,3 +50,4 @@ services:
     depends_on: [api]
 volumes:
   porter-database:
+  porter-documents:

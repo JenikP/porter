@@ -1,0 +1,9 @@
+{
+  "email": "upload.repro.1791679630460@example.test",
+  "status": 400,
+  "error": "Use a PNG, JPG, WebP or PDF smaller than 650 KB",
+  "driverId": "d5306f71-9309-42f4-b0b9-e9cbb06b7f2e",
+  "browserError": "Use a file smaller than 650 KB",
+  "database": "existing persistent local API",
+  "date": "2026-10-11T00:47:11.553Z"
+}

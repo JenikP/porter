@@ -1,0 +1,62 @@
+# Always use a distinct Compose project (-p porter-staging) and private env file.
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: porter_staging
+      POSTGRES_USER: porter
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set staging database password}
+    volumes: ["staging-database:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U porter -d porter_staging"]
+      interval: 5s
+      retries: 10
+  api:
+    build: {context: .., dockerfile: deploy/Dockerfile.api}
+    environment:
+      NODE_ENV: production
+      PORTER_ENV: staging
+      DATABASE_URL: postgres://porter:${POSTGRES_PASSWORD}@database:5432/porter_staging
+      APP_ORIGINS: ${APP_ORIGINS:?Set three staging HTTPS origins}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:?Set staging manager email}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:?Set staging manager password}
+      ALLOW_SIMULATORS: 'true'
+      PAYMENT_PROVIDER: simulator
+      ROUTING_PROVIDER: simulator
+      NOTIFICATION_PROVIDER: simulator
+      DOCUMENT_STORAGE_PATH: /data/private-uploads
+    volumes: ["staging-documents:/data/private-uploads"]
+    depends_on:
+      database: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      retries: 5
+  customer:
+    build: {context: .., dockerfile: deploy/Dockerfile.web, args: {APP: customer}}
+    depends_on:
+      api: {condition: service_healthy}
+  driver:
+    build: {context: .., dockerfile: deploy/Dockerfile.web, args: {APP: driver}}
+    depends_on:
+      api: {condition: service_healthy}
+  admin:
+    build: {context: .., dockerfile: deploy/Dockerfile.web, args: {APP: admin}}
+    depends_on:
+      api: {condition: service_healthy}
+  ingress:
+    image: caddy:2-alpine
+    ports: ["80:80", "443:443"]
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL:?Set TLS contact}
+      CUSTOMER_HOST: ${CUSTOMER_HOST:?Set customer staging domain}
+      DRIVER_HOST: ${DRIVER_HOST:?Set driver staging domain}
+      ADMIN_HOST: ${ADMIN_HOST:?Set admin staging domain}
+      API_HOSTNAME: ${API_HOSTNAME:?Set API staging domain}
+    volumes: ["./Caddyfile.staging:/etc/caddy/Caddyfile:ro", "staging-tls:/data", "staging-caddy:/config"]
+    depends_on: [customer, driver, admin, api]
+volumes:
+  staging-database:
+  staging-documents:
+  staging-tls:
+  staging-caddy:

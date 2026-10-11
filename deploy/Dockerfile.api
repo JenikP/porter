@@ -12,6 +12,8 @@ ENV NODE_ENV=production API_HOST=0.0.0.0 PORT=3001
 WORKDIR /app
 COPY --from=build /app/services/api/dist ./services/api/dist
 COPY --from=build /app/node_modules ./node_modules
+USER root
+RUN mkdir -p /data/private-uploads && chown -R node:node /data
 USER node
 EXPOSE 3001
 CMD ["node","services/api/dist/server.mjs"]

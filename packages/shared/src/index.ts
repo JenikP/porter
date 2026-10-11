@@ -161,6 +161,12 @@ export interface SavedAddress {
 }
 
 export interface DriverProfile {
+  applicationStatus?: 'DRAFT' | 'PENDING_REVIEW' | 'CHANGES_REQUIRED' | 'APPROVED' | 'REJECTED';
+  applicationNotes?: string;
+  onboardingStep?: number;
+  termsVersion?: string;
+  termsAcceptedAt?: Date;
+  submittedAt?: Date;
   /** Explicitly shared foreground location; not continuous background tracking. */
   location?: { lat: number; lng: number; updatedAt: Date };
   name?: string;
@@ -201,6 +207,7 @@ export interface Vehicle {
 }
 
 export interface DriverDocument {
+  filename?: string;
   id: string;
   driverId: string;
   type: DocumentType;
@@ -212,6 +219,28 @@ export interface DriverDocument {
   reviewedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export const DRIVER_TERMS_VERSION = 'prototype-2026-10-v1';
+// Stage 1 policy already requires these five categories for both supported classes.
+export const REQUIRED_DRIVER_DOCUMENTS = [DocumentType.IDENTITY, DocumentType.LICENCE, DocumentType.VEHICLE_REGISTRATION, DocumentType.INSURANCE, DocumentType.ABN];
+export const DRIVER_UPLOAD_LIMIT = 5 * 1024 * 1024;
+export function driverApplicationErrors(driver: DriverProfile, vehicle: Vehicle | undefined, documents: DriverDocument[], approved = false): string[] {
+  const errors: string[] = [];
+  if (!driver.name?.trim() || driver.name.trim().length < 2) errors.push('Full legal name is required');
+  if (!/^\+?[\d\s()-]{9,16}$/.test(driver.phone ?? '')) errors.push('A valid mobile number is required');
+  if (!/^\d{11}$/.test(driver.abn ?? '')) errors.push('An 11-digit ABN is required by the current Stage 1 policy');
+  if (!driver.identityNumber?.trim()) errors.push('Identity reference is required');
+  if (!vehicle?.make.trim() || !vehicle.model.trim() || !vehicle.plate.trim() || !Number.isInteger(vehicle.year) || vehicle.year < 1980 || vehicle.year > new Date().getFullYear()+1) errors.push('Complete vehicle make, model, year and registration');
+  if (!driver.termsAccepted || driver.termsVersion !== DRIVER_TERMS_VERSION || !driver.termsAcceptedAt) errors.push('Accept the current prototype driver terms');
+  for (const type of REQUIRED_DRIVER_DOCUMENTS) {
+    const doc = documents.find(d => d.driverId === driver.id && d.type === type);
+    if (!doc) errors.push(`${type.replace(/_/g,' ')} is missing`);
+    else if (['REJECTED','ACTION_REQUIRED','EXPIRED'].includes(doc.status)) errors.push(`${type.replace(/_/g,' ')} needs correction`);
+    else if (approved && doc.status !== DocumentStatus.APPROVED) errors.push(`${type.replace(/_/g,' ')} needs admin approval`);
+    if ([DocumentType.LICENCE,DocumentType.VEHICLE_REGISTRATION,DocumentType.INSURANCE].includes(type) && (!doc?.expiryDate || new Date(doc.expiryDate) <= new Date())) errors.push(`${type.replace(/_/g,' ')} needs a future expiry date`);
+  }
+  return errors;
 }
 
 export interface Job {

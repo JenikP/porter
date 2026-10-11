@@ -12,14 +12,14 @@ type Session = {user:SessionUser;request:(path:string,body?:unknown,key?:string)
 const SessionContext=createContext<Session|undefined>(undefined);
 export const useSession=()=>useContext(SessionContext);
 export async function uploadFile(request:Session['request'],file:File) {
- if(file.size>650000)throw new Error('Use a file smaller than 650 KB');
+ if(file.size>5*1024*1024)throw new Error('Use a file up to 5 MB');
  const data=await new Promise<string>((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=()=>reject(new Error('Unable to read file'));reader.readAsDataURL(file);});
  return (await request('/uploads',{name:file.name,data})).url as string;
 }
 export function DocumentLink({url}:{url:string}){
- const session=useSession();const [error,setError]=useState('');
+ const session=useSession();const [error,setError]=useState('');const [preview,setPreview]=useState<{name:string;data:string}>();
  if(!session||!url.startsWith('/api/uploads/'))return <span>{url.split('/').pop()}</span>;
- return <><button className="secondary" onClick={async()=>{try{const data=await session.request(url.replace('/api',''));const binary=atob(data.data.split(',')[1]);const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));const blob=new Blob([bytes],{type:data.data.split(';')[0].slice(5)});const target=URL.createObjectURL(blob);const link=document.createElement('a');link.href=target;link.download=data.name;link.click();setTimeout(()=>URL.revokeObjectURL(target),1000);}catch(e){setError(String(e));}}}>View uploaded document</button>{error&&<p role="alert">{error}</p>}</>;
+ return <><button type="button" className="secondary" onClick={async()=>{try{setPreview(await session.request(url.replace('/api','')));setError('');}catch(e){setError(String(e));}}}>View uploaded document</button>{preview&&<section className="document-preview"><b>{preview.name}</b>{preview.data.startsWith('data:image/')?<img className="proof" src={preview.data} alt={preview.name}/>:<p>PDF document · use Download to view in your PDF reader.</p>}<a className="secondary button-link" href={preview.data} download={preview.name}>Download document</a><button type="button" className="secondary" onClick={()=>setPreview(undefined)}>Close preview</button></section>}{error&&<p role="alert">{error}</p>}</>;
 }
 const revive=(data:unknown)=>deserializeMockPlatformState(JSON.stringify(data));
 
@@ -28,7 +28,7 @@ export function Application({role,children}:{role:Role;children:ReactNode}) {
  const base=(import.meta as unknown as {env?:Record<string,string>}).env?.VITE_API_URL || '/api';
  const request=async(path:string,body?:unknown,key?:string)=>{
   const response=await fetch(`${base}${path}`,{credentials:'include',signal:AbortSignal.timeout(15000),method:body===undefined?'GET':'POST',headers:{'X-Porter-App':role,...(body!==undefined?{'Content-Type':'application/json','X-CSRF-Token':session?.csrf||''}:{}),...(key?{'Idempotency-Key':key}:{})},body:body===undefined?undefined:JSON.stringify(body)});
-  let data;try{data=await response.json();}catch{throw new TypeError("Porter API is temporarily unavailable. Check your connection and retry.");}if(!response.ok){if(response.status===401&&path!=='/auth/login')setSession(null);throw new Error(data.error || 'Request failed');}return data;
+  let data;try{data=await response.json();}catch{throw new TypeError("Porter API is temporarily unavailable. Check your connection and retry.");}if(!response.ok){if(response.status===401&&path!=='/auth/login')setSession(null);throw new Error(data.error || 'Request failed');}if(body!==undefined&&path!=='/commands')window.dispatchEvent(new Event('porter:refresh'));return data;
  };
  useEffect(()=>{let active=true;request('/auth/me').then(data=>{if(active)setSession(data);}).catch(()=>{if(active)setSession(null);});return()=>{active=false;};},[]);
  useEffect(()=>{if(!session)return;const report=(event:string)=>{request('/telemetry',{event}).catch(()=>{});};const error=()=>report('CLIENT_ERROR');const rejection=()=>report('UNHANDLED_REJECTION');window.addEventListener('error',error);window.addEventListener('unhandledrejection',rejection);return()=>{window.removeEventListener('error',error);window.removeEventListener('unhandledrejection',rejection);};},[session?.user.id]);
@@ -44,7 +44,7 @@ function ApiPlatform({children,request}:{children:ReactNode;request:Session['req
  const [state,setState]=useState<MockPlatformState>();const [error,setError]=useState('');const [pending,setPending]=useState(0);const requestRef=useRef(request);requestRef.current=request;
  const mounted=useRef(true);const inflight=useRef(0);
  const refresh=async()=>{try{const data=await requestRef.current('/state');if(mounted.current && !inflight.current){setState(revive(data));setError('');}}catch(e){if(mounted.current)setError(e instanceof Error?e.message:'Connection unavailable');}};
- useEffect(()=>{mounted.current=true;refresh();const timer=window.setInterval(()=>{if(!inflight.current)refresh();},2000);return()=>{mounted.current=false;window.clearInterval(timer);};},[]);
+ useEffect(()=>{mounted.current=true;refresh();window.addEventListener('porter:refresh',refresh);const timer=window.setInterval(()=>{if(!inflight.current)refresh();},2000);return()=>{mounted.current=false;window.clearInterval(timer);window.removeEventListener('porter:refresh',refresh);};},[]);
  const actions=useMemo(()=>Object.fromEntries(Object.keys(createMockPlatformActions(()=>{})).map(method=>[method,async(...args:unknown[])=>{
   if(method==='canDriverGoOnline')return {ok:true};
   inflight.current++;setPending(n=>n+1);

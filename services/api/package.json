@@ -5,7 +5,7 @@
     "pg": "^8.16.3"
   },
   "scripts": {
-    "typecheck": "node --check src/launch/server.mjs && node --check src/launch/database.mjs && node --check src/launch/policy.mjs",
+    "typecheck": "node --check src/launch/server.mjs && node --check src/launch/database.mjs && node --check src/launch/policy.mjs && node --check src/launch/storage.mjs && node --check src/launch/migrations.mjs",
     "start": "node dist/server.mjs",
     "dev": "node ../../scripts/init-launch.mjs && node ../../scripts/build-api.mjs && node --env-file=../../.env.launch dist/server.mjs",
     "build": "node ../../scripts/build-api.mjs"

@@ -2,6 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import pg from 'pg';
+import {migrations} from './migrations.mjs';
 
 // The aggregate is locked for each mutation: quotes, matching and money move atomically.
 // PostgreSQL is required in production; SQLite is a zero-setup local development adapter.
@@ -28,6 +29,13 @@ export async function openDatabase(seed) {
   await query('CREATE TABLE IF NOT EXISTS devices (token_hash TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), platform TEXT NOT NULL, token TEXT NOT NULL)');
   await query('CREATE TABLE IF NOT EXISTS notification_outbox (id TEXT PRIMARY KEY, account_id TEXT NOT NULL REFERENCES accounts(id), payload TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, due BIGINT NOT NULL, status TEXT NOT NULL DEFAULT \'PENDING\')');
   await query('CREATE TABLE IF NOT EXISTS telemetry (event TEXT PRIMARY KEY, count BIGINT NOT NULL DEFAULT 0)');
+  await query('CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, name TEXT NOT NULL, applied_at BIGINT NOT NULL)');
+  for(const migration of migrations){
+    if((await query('SELECT version FROM schema_migrations WHERE version=$1',[migration.version])).length)continue;
+    // DDL is additive and idempotent, including if a prior startup stopped halfway through.
+    for(const sql of migration.sql)await query(sql);
+    await query('INSERT INTO schema_migrations(version,name,applied_at) VALUES($1,$2,$3) ON CONFLICT(version) DO NOTHING',[migration.version,migration.name,Date.now()]);
+  }
   await query('INSERT INTO porter_state(id,data) VALUES(1,$1) ON CONFLICT(id) DO NOTHING', [JSON.stringify(seed)]);
   let queue = Promise.resolve();
   const transaction = (work) => {

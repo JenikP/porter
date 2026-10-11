@@ -20,11 +20,13 @@
     "dev:admin": "npm run dev --workspace=apps/admin-web",
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "node scripts/test.mjs",
+    "test": "node scripts/test.mjs && node --test tests/storage.test.mjs",
     "test:e2e": "node scripts/e2e.mjs && node scripts/interventions.mjs && node scripts/smoke.mjs && node scripts/error-states.mjs && node scripts/forms.mjs",
     "dev:api": "node scripts/init-launch.mjs && node scripts/build-api.mjs && node --env-file=.env.launch services/api/dist/server.mjs",
     "test:launch": "node scripts/launch-check.mjs",
     "test:providers": "node --test tests/providers.test.mjs",
+    "test:staging": "node scripts/staging-acceptance.mjs",
+    "build:android": "node scripts/build-android.mjs",
     "build:production": "npm run build --workspace=apps/customer-web && npm run build --workspace=apps/driver-web && npm run build --workspace=apps/admin-web && npm run build --workspace=services/api"
   },
   "devDependencies": {

@@ -35,6 +35,16 @@ jobs:
       - run: npm run test:providers
       - run: npx playwright install --with-deps chromium
       - run: npm run test:launch
+      - name: PostgreSQL backup and restore drill
+        env:
+          DATABASE_URL: postgres://porter_test:ci-disposable-database@127.0.0.1:5432/porter_test
+          PORTER_RESTORE_DATABASE_URL: postgres://porter_test:ci-disposable-database@127.0.0.1:5432/porter_restore_test
+        run: |
+          export DOCUMENT_STORAGE_PATH="$(find "$PWD" -maxdepth 2 -path '*/.tmp-launch-*/private-uploads' -type d | head -n 1)"
+          test -n "$DOCUMENT_STORAGE_PATH"
+          PGPASSWORD=ci-disposable-database createdb -h 127.0.0.1 -U porter_test porter_restore_test
+          node scripts/staging-backup.mjs backup .tmp-staging-backup
+          node scripts/staging-backup.mjs verify-restore .tmp-staging-backup
       - name: Validate deployment images
         run: |
           docker build -f deploy/Dockerfile.api -t porter-api:ci .
