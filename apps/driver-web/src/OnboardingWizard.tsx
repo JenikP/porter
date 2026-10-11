@@ -13,8 +13,9 @@ export function OnboardingWizard({driverId,onExit}:{driverId:string;onExit?:()=>
  const [docs,setDocs]=useState(p.driverDocuments.filter(doc=>doc.driverId===driverId));const requestRef=useRef(session.request);requestRef.current=session.request;
  useEffect(()=>setDocs(p.driverDocuments.filter(doc=>doc.driverId===driverId)),[p.driverDocuments,driverId]);
  useEffect(()=>setSubmitted(d.applicationStatus==='PENDING_REVIEW'),[d.applicationStatus]);
- const saveProfile=()=>requestRef.current('/driver/application',{action:'profile',profile,vehicle});
- useEffect(()=>{if(!dirty||d.approvalStatus==='APPROVED')return;const timer=setTimeout(()=>{saveProfile().then(()=>{setSaved('Draft saved');setDirty(false);}).catch(e=>setError(String(e)));},800);return()=>clearTimeout(timer);},[profile,vehicle,dirty]);
+ const saveQueue=useRef(Promise.resolve<any>(undefined));
+ const saveProfile=()=>{const snapshot={action:'profile',profile,vehicle};const operation=saveQueue.current.catch(()=>{}).then(()=>requestRef.current('/driver/application',snapshot));saveQueue.current=operation;return operation;};
+ useEffect(()=>{if(!dirty||d.approvalStatus==='APPROVED')return;let active=true;const timer=setTimeout(()=>{saveProfile().then(()=>{if(active){setSaved('Draft saved');setDirty(false);}}).catch(e=>{if(active)setError(String(e));});},800);return()=>{active=false;clearTimeout(timer);};},[profile,vehicle,dirty]);
  const errors=driverApplicationErrors({...d,...profile},v?{...v,...vehicle}:{...vehicle,id:'draft',driverId,isDefault:true,createdAt:new Date(),updatedAt:new Date()},docs);
  const act=async(f:()=>Promise<void>)=>{setBusy(true);setError('');try{await f();}catch(e){setError(e instanceof Error?e.message:'Unable to save. Please retry.');}finally{setBusy(false);}};
  const go=async(next:number)=>{await session.request('/driver/application',{action:'step',step:next});setStep(next);setSaved('Progress saved');};
