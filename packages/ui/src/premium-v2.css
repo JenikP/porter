@@ -813,3 +813,49 @@ input[type=file]::file-selector-button {
   from { opacity:0; transform:translateY(8px); }
   to { opacity:1; transform:none; }
 }
+
+.porter-button--danger {
+  background:#fff0f1;
+  color:var(--porter-danger);
+  border:1px solid #ffd4d9;
+  box-shadow:none;
+}
+.porter-button--danger:hover { background:#ffe7ea;color:#bd3041; }
+.porter-button--accent {
+  background:var(--porter-cyan-soft);
+  color:#087f87;
+  border:1px solid #c5eef1;
+  box-shadow:none;
+}
+.porter-button--accent:hover { background:#d9f7f9;color:#066b71; }
+
+[data-theme=dark] {
+  --porter-bg:#081329;
+  --porter-surface:#101f3e;
+  --porter-ink:#f4f7ff;
+  --porter-muted:#a8b4cf;
+  --porter-line:#263a61;
+  background:var(--porter-bg);
+  color:var(--porter-ink);
+}
+[data-theme=dark] body { background:var(--porter-bg);color:var(--porter-ink); }
+[data-theme=dark] h1,[data-theme=dark] h2,[data-theme=dark] h3,
+[data-theme=dark] .metric,[data-theme=dark] .price { color:#f7f9ff; }
+[data-theme=dark] .panel,[data-theme=dark] .porter-card,
+[data-theme=dark] .tracking-header,[data-theme=dark] .customer-page>.bottom-nav,
+[data-theme=dark] .driver-nav,[data-theme=dark] .booking-actions,
+[data-theme=dark] .workspace-indicator { background:#101f3e;color:#f4f7ff;border-color:#263a61; }
+[data-theme=dark] label,[data-theme=dark] .driver-metrics strong,
+[data-theme=dark] .driver-summary>strong,[data-theme=dark] .net-earnings strong { color:#f4f7ff; }
+[data-theme=dark] label input,[data-theme=dark] label select,[data-theme=dark] label textarea,[data-theme=dark] .porter-input {
+  background:#0c1933;color:#f4f7ff;border-color:#2c416a;
+}
+[data-theme=dark] .secondary,[data-theme=dark] .porter-button--secondary {
+  background:#101f3e;color:#f4f7ff;border-color:#31466f;
+}
+[data-theme=dark] .address-shortcut,[data-theme=dark] .recipient-row,[data-theme=dark] .active-job details {
+  background:#0d1b36;border-color:#263a61;color:#f4f7ff;
+}
+[data-theme=dark] .data-table th { background:#0d1b36;color:#9cabc9; }
+[data-theme=dark] .data-table tbody tr:hover { background:#12274c; }
+[data-theme=dark] .map-sim { filter:saturate(.85) brightness(.8); }
