@@ -40,9 +40,9 @@ try {
  await page.goto(base+'/driver'); await page.locator('main h1').waitFor();
  for(const title of ['Home','Documents','Earnings','History']){await click(title); await capture('Driver',title,title.toLowerCase());}
  // Create a real issue using the isolated browser's seeded completed job.
- await page.goto(base+'/jobs/job_prev_001'); await page.getByText('Report an issue',{exact:true}).click();
+ await page.goto(base+'/jobs/job_prev_001'); await page.getByRole('button',{name:'Raise a dispute',exact:true}).click();
  await page.getByLabel('Tell us what happened').fill('Outer packaging scuffed during delivery. Please review handover evidence.');
- await capture('Customer','Report a delivery issue','report-issue'); await click('Raise dispute');
+ await capture('Customer','Report a delivery issue','report-issue'); await click('Submit issue for review');
  await capture('Customer','Delivery with submitted dispute','disputed-delivery');
  await page.goto(base+'/admin'); await page.locator('main h1').waitFor();
  for(const title of ['Overview','Jobs','Live Map','Drivers','Customers','Disputes','Pricing','Payments','Reports','Settings','Audit Log']){

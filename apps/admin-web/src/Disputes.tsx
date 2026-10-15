@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMockPlatform } from '@porter/mock-platform';
 import { DisputeStatus } from '@porter/shared';
-import { JobDetail,driverName,money,date } from '../../customer-web/src/pages/JobDetail';
+import { JobDetail,driverName,money,date } from '@porter/marketplace-ui';
 export function Disputes({ run }: { run:(f:()=>void)=>void }) {
  const p = useMockPlatform(); const [status,setStatus] = useState(''); const [id,setId] = useState(''); const disputes = p.disputes.filter(d => !status || d.status === status).slice().reverse();
  return <><h2>Dispute review</h2><label>Dispute status<select value={status} onChange={e => setStatus(e.target.value)}><option value="">All issues</option>{Object.values(DisputeStatus).map(s => <option key={s}>{s}</option>)}</select></label><div className="dispute-workspace"><div className="dispute-list">{disputes.map(d => <button className="panel text-left" key={d.id} onClick={() => setId(d.id)}><b>{d.reason.replaceAll('_',' ')} · {d.status}</b><p>{d.description}</p><small>{d.jobId} · {date(d.createdAt)}</small></button>)}</div>{!disputes.length && <p className="panel muted">No disputes match this view. Customer issue reports appear here immediately.</p>}{id && p.disputes.some(d => d.id === id) && <DisputeDetail key={id} id={id} run={run}/>}</div></>;

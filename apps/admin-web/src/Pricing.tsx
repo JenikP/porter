@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMockPlatform } from '@porter/mock-platform';
 import { calculatePrice } from '@porter/domain';
 import { VehicleClass, TimeOption, type RateCardValues } from '@porter/shared';
-import { money,date } from '../../customer-web/src/pages/JobDetail';
+import { money,date } from '@porter/marketplace-ui';
 const labels:Record<string,string>={baseFareBikeOrCar:'Bike / car base fare',baseFareVanOrUte:'Van / ute base fare',perKmRate:'Per kilometre',perMinuteRate:'Per minute',flexibleWindowMultiplier:'Flexible multiplier',within3HoursMultiplier:'Within 3 hours multiplier',within1HourMultiplier:'Within 1 hour multiplier',stairsPerFlight:'Per stair flight',helperCharge:'Helper charge',freeWaitingMinutes:'Free waiting minutes',waitingPerMinute:'Waiting per minute',minPriceBikeOrCar:'Bike / car minimum',minPriceVanOrUte:'Van / ute minimum',commissionPercent:'Commission (%)'};
 const groups=[['Vehicle & distance',['baseFareBikeOrCar','baseFareVanOrUte','minPriceBikeOrCar','minPriceVanOrUte','perKmRate','perMinuteRate']],['Speed & handling',['flexibleWindowMultiplier','within3HoursMultiplier','within1HourMultiplier','stairsPerFlight','helperCharge','freeWaitingMinutes','waitingPerMinute','commissionPercent']]] as const;
 export function Pricing({run}:{run:(f:()=>void)=>void}) {

@@ -22,7 +22,7 @@ export function App() {
         <Route path="/account" element={<AccountPage />} />
         <Route path="*" element={<HelpPage />} />
       </Routes>
-      <nav className="bottom-nav" aria-label="Customer navigation">{[['Home','/','home'],['Jobs','/jobs','jobs'],['Help','/help','help'],['Account','/account','account']].map(([label,url,icon]) => <button key={url} aria-current={location.pathname === url || (url==='/jobs' && location.pathname.startsWith('/jobs/')) ? 'page' : undefined} onClick={() => navigate(url)}><Icon name={icon}/><span>{label}</span></button>)}</nav>
+      <nav className="bottom-nav" aria-label="Customer navigation">{[['Home','/','home'],['Deliveries','/jobs','jobs'],['Help','/help','help'],['Account','/account','account']].map(([label,url,icon]) => <button key={url} aria-current={location.pathname === url || (url==='/jobs' && location.pathname.startsWith('/jobs/')) ? 'page' : undefined} onClick={() => navigate(url)}><Icon name={icon}/><span>{label}</span></button>)}</nav>
     </main></PlatformGate>
   );
 }

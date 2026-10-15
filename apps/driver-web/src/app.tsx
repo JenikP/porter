@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useSession, LocationControl } from '@porter/app-session';
 import { useMockPlatform, driverHasValidDocuments, PlatformGate } from '@porter/mock-platform';
 import { Icon, StatusBadge } from '@porter/ui';
-import { driverName, money, done } from '../../customer-web/src/pages/JobDetail';
+import { driverName, money, done } from '@porter/marketplace-ui';
 import { OfferPanel } from './OfferPanel';
 import { ActiveJob } from './ActiveJob';
 import { Documents } from './Documents';
 import { Earnings } from './Earnings';
-import '../../customer-web/src/styles.css';
+import '../../../packages/ui/src/application.css';
 const driverTabs=[['Home','home'],['Documents','jobs'],['Earnings','payments'],['History','clock']];
 export function App() {
  const p=useMockPlatform();

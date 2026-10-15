@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './app';
 import { Application, registerMobileShell } from '@porter/app-session';
 import './styles.css';
+import '../../../packages/ui/src/premium-v2.css';
 
 registerMobileShell();
 createRoot(document.getElementById('root')!).render(

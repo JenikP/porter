@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMockPlatform, driverHasValidDocuments } from '@porter/mock-platform';
 import { JobStatus } from '@porter/shared';
-import { JobDetail, money, driverName } from '../../customer-web/src/pages/JobDetail';
+import { JobDetail, money, driverName } from '@porter/marketplace-ui';
 import { StatusBadge } from '@porter/ui';
 export function Jobs({ run }: { run:(f:()=>void)=>void }) {
  const p = useMockPlatform(); const [search,setSearch] = useState(''); const [status,setStatus] = useState(''); const [selected,setSelected] = useState(''); const [driver,setDriver] = useState(''); const [reason,setReason] = useState(''); const job = p.jobs.find(j => j.id === selected);

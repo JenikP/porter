@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMockPlatform } from '@porter/mock-platform';
 import { JobStatus,PaymentStatus } from '@porter/shared';
-import { money } from '../../customer-web/src/pages/JobDetail';
+import { money } from '@porter/marketplace-ui';
 export function Reports() {
  const p = useMockPlatform(); const [from,setFrom] = useState(''); const jobs = p.jobs.filter(j => !from || j.createdAt >= new Date(from)); const paid = jobs.filter(j => p.payments.some(v => v.jobId === j.id && v.status !== PaymentStatus.FAILED) || j.driverId); const completed = jobs.filter(j => j.status === JobStatus.COMPLETED || j.actualDeliveryTime); const cancelled = jobs.filter(j => j.status === JobStatus.CANCELLED); const issues = p.disputes.filter(d => jobs.some(j => j.id === d.jobId));
  const stats = [['Completed jobs',completed.length],['Match rate',paid.length ? Math.round(paid.filter(j => j.driverId).length / paid.length * 100) + '%' : '0%'],['Unmatched jobs',jobs.filter(j => j.status === JobStatus.UNMATCHED).length],['Cancellation rate',jobs.length ? Math.round(cancelled.length / jobs.length * 100) + '%' : '0%'],['Disputes',issues.length],['GMV',money(completed.reduce((s,j) => s + j.price,0))],['Commission revenue',money(completed.reduce((s,j) => s + j.commission,0))],['Driver net earnings',money(completed.reduce((s,j) => s + j.driverEarnings - (issues.find(d => d.jobId === j.id)?.driverDeduction ?? 0),0))],['Refunds',money(p.payments.filter(v => jobs.some(j => j.id === v.jobId)).reduce((s,v) => s + (v.refundAmount ?? 0),0))]];

@@ -39,7 +39,12 @@ try{
  record('Three independent branded access screens; desktop/mobile, no role selector or admin links');
  const customerEmail='qa.customer.a@example.test';const driverEmail='qa.driver.b@example.test';
  await register(customer,'customer',customerEmail,'Customer A',true);await register(other,'customer','qa.customer.other@example.test','Customer Other');await register(driver,'driver',driverEmail,'Driver B');await login(admin,'admin',adminEmail);
- await customer.getByRole('heading',{name:'Deliver across Melbourne',exact:true}).waitFor();await driver.getByRole('heading',{name:'Your driver application',exact:true}).waitFor();await admin.getByRole('heading',{name:'Operations overview',exact:true}).waitFor();
+ await customer.getByRole('heading',{name:'What are we moving today?',exact:true}).waitFor();await customer.getByRole('button',{name:'Send something',exact:true}).waitFor();await driver.getByRole('heading',{name:'Your driver application',exact:true}).waitFor();await admin.getByRole('heading',{name:'Operations overview',exact:true}).waitFor();
+ for(const [role,page] of [['customer',customer],['driver',driver],['admin',admin]]){
+  assert.equal(await page.getByRole('navigation',{name:'Demo role',exact:true}).count(),0,role+' has no preview role selector');
+  assert.equal(await page.getByText('DEVELOPMENT PREVIEW',{exact:true}).count(),0,role+' has no preview shell');
+  assert.equal(await page.locator('a[href*="admin"]').count(),0,role+' exposes no admin navigation');
+ }
  assert.equal(await driver.getByLabel('Demo driver').count(),0);
  record('Customer/business and Driver registration/onboarding; dedicated Admin login with own identities');
  const otherState=await state(other,'customer');assert.equal(otherState.customers.length,1);assert.equal(otherState.jobs.length,0);assert.equal(otherState.driverDocuments.length,0);
@@ -62,10 +67,10 @@ try{
  for(const type of ['IDENTITY','LICENCE','VEHICLE REGISTRATION','INSURANCE','ABN']){const article=admin.locator('article').filter({has:admin.getByRole('heading',{name:type,exact:true})});await article.getByRole('button',{name:'Approve document',exact:true}).click();await settle(admin);}
  await click(admin,'Approve driver');await settle(admin);await click(driver,'Home');await driver.getByRole('button',{name:'Go online',exact:true}).waitFor({state:'visible'});await click(driver,'Go online');await driver.getByRole('button',{name:'Go offline',exact:true}).waitFor();
  record('Private document uploads, central Admin review/approval, eligible driver online');
- await click(customer,'Book a delivery');await click(customer,'Continue');await customer.getByLabel('Item description').fill('Two boxed lamps from Carlton Lighting');await click(customer,'Continue');await click(customer,'Continue');await click(customer,'Continue');await customer.locator('.price').filter({hasText:'$21.34'}).waitFor();await click(customer,'Continue');await click(customer,'Confirm mock payment');await customer.getByRole('heading',{name:'Searching',exact:true}).waitFor();
- await driver.getByRole('button',{name:'Accept offer',exact:true}).waitFor();
+ await click(customer,'Send something');await click(customer,'Continue');await customer.getByLabel('Item description').fill('Two boxed lamps from Carlton Lighting');await click(customer,'Continue');await click(customer,'Continue');await click(customer,'Continue');await customer.locator('.price').filter({hasText:'$21.34'}).waitFor();await click(customer,'Continue');await click(customer,'Confirm mock payment');await customer.getByRole('heading',{name:'Searching',exact:true}).waitFor();
+ await driver.getByRole('button',{name:'Accept delivery',exact:true}).waitFor();
  const before=await state(driver,'driver');assert.ok(!before.jobs[0].pickupAddress.includes('120 Collins'));assert.ok(!before.jobs[0].recipientCode);
- await click(driver,'Accept offer');await customer.getByRole('heading',{name:'Driver Assigned',exact:true}).waitFor();await customer.getByText('Driver B',{exact:true}).waitFor();
+ await click(driver,'Accept delivery');await customer.getByRole('heading',{name:'Driver Assigned',exact:true}).waitFor();await customer.getByText('Driver B',{exact:true}).waitFor();
  record('Customer booking/server-calculated quote/payment; another browser receives/accepts offer and assignment updates');
  const s=await state(customer,'customer');const job=s.jobs[0];
  await contexts[1].grantPermissions(['geolocation'],{origin:origins.driver});await contexts[1].setGeolocation({latitude:-37.8136,longitude:144.9631});await click(driver,'Share location while online');await driver.getByText('Location update saved.',{exact:true}).waitFor();await customer.getByText(/Last shared location: -37.81360/).waitFor();await click(driver,'Stop sharing location');
@@ -82,7 +87,7 @@ try{
  assert.equal((await fetch('http://127.0.0.1:3002/api/webhooks/payments',{method:'POST',headers:{'X-Porter-Signature':'invalid'},body:raw})).status,401);for(let i=0;i<2;i++)assert.equal((await fetch('http://127.0.0.1:3002/api/webhooks/payments',{method:'POST',headers:{'X-Porter-Signature':signature},body:raw})).status,200);
  assert.equal((await state(driver,'driver')).payouts.length,1);record('Signed payment confirmation webhook accepts repeated events without double credit; forged signature rejected');
  record('Ordered driver delivery, actual image proofs, recipient verification and central earnings/payout accrual');
- await click(customer,'Submit rating');await customer.getByText('Your rating: 5/5',{exact:false}).waitFor();await customer.getByText('Report an issue',{exact:true}).click();await customer.getByLabel('Tell us what happened').fill('Outer packaging was damaged during delivery. Please review.');await click(customer,'Raise dispute');await customer.getByRole('heading',{name:'Under Review',exact:true}).waitFor();
+ await click(customer,'Submit rating');await customer.getByText(/^Thanks for your feedback/).waitFor();await click(customer,'Raise a dispute');await customer.getByLabel('Tell us what happened').fill('Outer packaging was damaged during delivery. Please review.');await click(customer,'Submit issue for review');await customer.getByRole('heading',{name:'Under Review',exact:true}).waitFor();
  await click(admin,'Disputes');await admin.getByRole('button').filter({hasText:'Outer packaging was damaged'}).click();await admin.getByLabel('Decision',{exact:true}).fill('Evidence reviewed; partial refund approved.');await admin.getByLabel('Refund amount (AUD)',{exact:true}).fill('5');await admin.getByLabel('Driver deduction (AUD)',{exact:true}).fill('2');await click(admin,'Resolve dispute');await customer.getByText(/Resolution: Evidence reviewed/).waitFor();
  record('Customer rating/dispute Under Review; independent Admin resolution updates refund and driver adjustment');
  const finalized=await state(customer,'customer');assert.equal(finalized.payments[0].refundAmount,5);assert.equal(finalized.disputes[0].driverDeduction,2);await customer.reload();await customer.getByText(/Resolution: Evidence reviewed/).waitFor();await click(customer,'Log out');await login(customer,'customer',customerEmail);await customer.goto(origins.customer+'/jobs/'+job.id);await customer.getByText(/Resolution: Evidence reviewed/).waitFor();

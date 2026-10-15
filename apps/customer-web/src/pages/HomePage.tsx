@@ -17,21 +17,25 @@ export function HomePage() {
   const driver = drivers.find(driver => driver.id === activeJob?.driverId);
   return <div className="customer-home">
     <header className="home-header">
-      <div><h1>Deliver across Melbourne</h1><p className="muted">Book a vetted driver for envelopes, parcels, and bulky items with photo proof at drop-off.</p></div>
-      <Button onClick={book}>Book a delivery <Icon name="arrow"/></Button>
+      <div>
+        <p className="eyebrow">PORTER · MELBOURNE</p>
+        <h1>What are we moving today?</h1>
+        <p className="muted">From a parcel across town to a bulky item across Melbourne, book the right Porter in minutes with clear pricing and proof of delivery.</p>
+      </div>
+      <Button onClick={book}>Send something <Icon name="arrow"/></Button>
     </header>
     <div className="home-layout">
-      <section className="panel quick-start"><h2>Quick start</h2><p className="muted">Where are we picking up and dropping off?</p>
+      <section className="panel quick-start"><h2>Plan your delivery</h2><p className="muted">Add pickup and drop-off now. We’ll guide you through the rest.</p>
         <div className="booking-addresses"><div className="address-field"><Icon name="pin"/><Input label="Pickup" value={pickup} onChange={e => setPickup(e.target.value)} /></div>
         <div className="address-field"><Icon name="pin"/><Input label="Drop-off" value={dropoff} onChange={e => setDropoff(e.target.value)} /></div></div>
         <Button fullWidth onClick={quickStart}>Continue booking <Icon name="arrow"/></Button>
       </section>
-      <section className="panel active-delivery"><div className="section-heading"><h2>Active delivery</h2>{activeJob && <StatusBadge status={activeJob.status} size="sm"/>}</div>
+      <section className="panel active-delivery"><div className="section-heading"><h2>{activeJob ? 'Live delivery' : 'Your deliveries'}</h2>{activeJob && <StatusBadge status={activeJob.status} size="sm"/>}</div>
         {activeJob ? <>
           <div className="driver-summary"><span className="avatar">{driver ? (driver.name ?? 'Sam Nguyen').split(' ').map(n=>n[0]).slice(0,2).join('') : <Icon name="search"/>}</span><div><b>{driver?.name ?? 'Finding your driver'}</b><small>{driver ? `★ ${driver.rating.toFixed(2)} · Driver assigned` : 'Matching eligible Melbourne drivers'}</small></div><strong>${activeJob.price.toFixed(2)}</strong></div>
           <div className="route-stops"><p>{activeJob.pickupAddress}</p><p>{activeJob.dropoffAddress}</p></div>
           <Button className="forest-button" fullWidth onClick={() => navigate(`/jobs/${activeJob.id}`)}>Track delivery <Icon name="arrow"/></Button>
-        </> : <p className="muted">No active deliveries right now.</p>}
+        </> : <><p className="muted">Nothing is moving right now.</p><Button variant="secondary" onClick={book}>Start a delivery</Button></>}
       </section>
       <section className="panel recent-deliveries"><div className="section-heading"><h2>Recent deliveries</h2><button className="text-action" onClick={()=>navigate('/jobs')}>View all <Icon name="chevron" size={16}/></button></div>
         {recentJobs.length ? recentJobs.map(job => <div className="home-row" key={job.id}>
@@ -39,12 +43,12 @@ export function HomePage() {
           <Button variant="secondary" size="sm" onClick={() => navigate(`/jobs/${job.id}`)}>View delivery</Button>
         </div>) : <p className="muted">Your completed deliveries will appear here.</p>}
       </section>
-      <section className="panel saved-addresses"><div className="section-heading"><h2>Saved addresses</h2><button className="text-action" onClick={()=>navigate('/account')}>Edit <Icon name="chevron" size={16}/></button></div><div className="address-shortcuts">
+      <section className="panel saved-addresses"><div className="section-heading"><h2>Saved places</h2><button className="text-action" onClick={()=>navigate('/account')}>Manage <Icon name="chevron" size={16}/></button></div><div className="address-shortcuts">
         {customer?.savedAddresses.map(address => <button className="address-shortcut" key={address.label} onClick={()=>{sessionStorage.removeItem('porter.booking');navigate('/book',{state:{pickup,dropoff:address.address,step:0}});}}><Icon name={address.isDefault?'home':'pin'}/><b>{address.label}</b><small>{address.address}</small></button>)}
         </div>
-        {!customer?.savedAddresses.length && <p className="muted">Save addresses in Account for faster booking.</p>}
+        {!customer?.savedAddresses.length && <p className="muted">Save places in Account for faster booking.</p>}
       </section>
     </div>
-    <aside className="proof-note"><Icon name="shield"/><strong>Proof of delivery included</strong><p>Every Porter drop-off captures a photo and timestamp so you and your recipient can trust the handover.</p></aside>
+    <aside className="proof-note"><Icon name="shield"/><strong>Proof built into every delivery</strong><p>Pickup and drop-off evidence stays attached to the job so the handover is clear for everyone.</p></aside>
   </div>;
 }
