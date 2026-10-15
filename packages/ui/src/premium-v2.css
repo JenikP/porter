@@ -1025,3 +1025,208 @@ input[type=file]::file-selector-button {
 @media(prefers-reduced-motion:reduce) {
   .live-orbit::after { animation:none!important; }
 }
+
+/* Fresh Figma export alignment — 2026-10-15 */
+.preview-label {
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:4px 9px;
+  margin-left:4px;
+  border-radius:999px;
+  background:#fff6df;
+  border:1px solid #f3dfaa;
+  color:#9a6200;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+/* Customer: tighter, calmer mobile-native composition */
+@media(max-width:760px) {
+  .customer-page {
+    max-width:430px;
+    margin:0 auto;
+  }
+  .customer-home {
+    padding-top:2px;
+  }
+  .home-header {
+    margin-bottom:16px;
+    padding:24px 20px;
+    border-radius:22px;
+    box-shadow:0 16px 36px rgba(36,70,245,.18);
+  }
+  .home-header h1 {
+    max-width:300px;
+    font-size:34px;
+    line-height:1.02;
+    letter-spacing:-.045em;
+  }
+  .home-header .muted {
+    margin-top:10px;
+    font-size:13px;
+    line-height:1.45;
+  }
+  .home-header .porter-button,
+  .home-header button {
+    min-height:52px;
+    width:100%;
+    margin-top:16px;
+    border-radius:15px;
+    justify-content:center;
+  }
+  .home-layout {
+    gap:12px;
+  }
+  .home-layout .panel {
+    border-radius:18px;
+    padding:16px;
+    box-shadow:0 7px 20px rgba(10,22,51,.05);
+  }
+  .quick-start::before {
+    margin-bottom:6px;
+    font-size:9px;
+  }
+  .booking-addresses {
+    gap:10px;
+  }
+  .address-field>svg {
+    width:36px;
+    height:36px;
+    padding:9px;
+  }
+  .booking {
+    max-width:430px;
+  }
+  .booking-progress {
+    margin:4px 0 18px;
+    padding:9px;
+    border-radius:14px;
+  }
+  .booking-layout .porter-card {
+    padding:17px;
+    border-radius:18px;
+  }
+  .booking-summary {
+    border-radius:18px;
+  }
+  .selection-card {
+    min-height:68px;
+    border-radius:15px!important;
+  }
+  .booking-actions {
+    bottom:78px;
+    padding:10px;
+    border-radius:16px;
+  }
+  .tracking-header {
+    border-radius:18px;
+  }
+  .tracking-main>.map-sim {
+    min-height:300px;
+    border-radius:18px;
+  }
+  .driver-profile {
+    border-radius:14px;
+  }
+  .feedback-panel {
+    padding:18px;
+  }
+}
+
+/* Driver: dark operational offer state from final export */
+.offer-card {
+  color:#fff;
+  border-color:#263a61;
+  background:linear-gradient(180deg,#0d1b36 0%,#102247 100%);
+  box-shadow:0 18px 42px rgba(10,22,51,.18);
+}
+.offer-card .eyebrow {
+  color:#9fb2e5;
+}
+.offer-card .muted,
+.offer-card small {
+  color:#aebddd;
+}
+.offer-earnings {
+  color:#fff;
+}
+.offer-route {
+  background:#12264f;
+  border:1px solid rgba(255,255,255,.06);
+}
+.offer-route small {
+  color:#90a2cc;
+}
+.offer-route b {
+  color:#fff;
+}
+.offer-meta span {
+  background:#172e5f;
+  color:#cbd6f5;
+}
+.offer-countdown {
+  width:82px;
+  height:82px;
+  border-color:var(--porter-cyan);
+  background:#0a1633;
+  box-shadow:0 0 0 7px rgba(19,199,207,.08),0 0 30px rgba(19,199,207,.12);
+}
+.offer-actions .secondary {
+  background:#12264f;
+  color:#d9e2f7;
+  border-color:#2a426f;
+}
+
+/* Admin: denser control-room proportions from final export */
+@media(min-width:1100px) {
+  .operations-sidebar {
+    width:210px;
+    flex-basis:210px;
+    padding:14px 12px;
+  }
+  .operations-sidebar nav button {
+    min-height:38px;
+    font-size:12px;
+  }
+  .admin-page {
+    padding:18px 20px 34px;
+  }
+  .operations-header {
+    padding:2px 0 0;
+  }
+  .operations-header h1 {
+    font-size:25px;
+  }
+  .admin-kpi-grid {
+    gap:9px;
+  }
+  .admin-kpi-grid .kpi-card {
+    padding:13px;
+    border-radius:14px;
+    min-height:106px;
+  }
+  .admin-kpi-grid .kpi-card .kpi-icon {
+    width:34px;
+    height:34px;
+    border-radius:10px;
+  }
+  .admin-kpi-grid .metric {
+    font-size:23px;
+  }
+  .overview-charts {
+    gap:10px;
+  }
+  .overview-charts>.panel,
+  .admin-page>.panel {
+    border-radius:15px;
+    padding:15px;
+  }
+  .data-table th,
+  .data-table td {
+    padding-top:9px;
+    padding-bottom:9px;
+  }
+}
