@@ -859,3 +859,169 @@ input[type=file]::file-selector-button {
 [data-theme=dark] .data-table th { background:#0d1b36;color:#9cabc9; }
 [data-theme=dark] .data-table tbody tr:hover { background:#12274c; }
 [data-theme=dark] .map-sim { filter:saturate(.85) brightness(.8); }
+
+/* Customer completion, rating and dispute */
+.feedback-panel { overflow:hidden; }
+.rating-stars {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:8px 0 16px;
+}
+.rating-star {
+  width:52px;
+  min-height:52px;
+  border-radius:15px;
+  border:1px solid var(--porter-line);
+  background:#fff;
+  color:#ccd3e0;
+  font-size:26px;
+  transition:transform .16s ease,color .16s ease,background-color .16s ease,border-color .16s ease;
+}
+.rating-star:hover { transform:translateY(-1px);border-color:#f4c86a;color:#e6a91f; }
+.rating-star.selected {
+  color:#e6a91f;
+  background:#fff8e8;
+  border-color:#f3d58f;
+  box-shadow:0 7px 18px rgba(233,155,24,.10);
+}
+.dispute-entry {
+  display:flex;
+  gap:18px;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:24px;
+  padding:18px;
+  border-radius:18px;
+  border:1px solid #ffd9de;
+  background:linear-gradient(135deg,#fff9fa,#fff3f5);
+}
+.dispute-entry h3 { margin:2px 0 4px; }
+.dispute-entry .muted { margin:0; }
+.dispute-button {
+  flex-shrink:0;
+  min-height:48px;
+  border-radius:14px;
+  border:1px solid #ffc8cf;
+  background:#fff;
+  color:var(--porter-danger);
+  font-weight:800;
+  padding:10px 16px;
+}
+.dispute-button:hover { background:#fff0f1; }
+.dispute-form {
+  margin-top:14px;
+  padding:18px;
+  border:1px solid #ffd9de;
+  border-radius:18px;
+  background:#fffafb;
+  animation:porter-page-in .2s ease-out;
+}
+
+/* Driver offers */
+.offers-panel { overflow:hidden; }
+.live-orbit {
+  position:relative;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:var(--porter-cyan);
+  box-shadow:0 0 0 5px rgba(19,199,207,.10);
+}
+.live-orbit::after {
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border:1px solid rgba(19,199,207,.24);
+  border-radius:50%;
+  animation:porter-orbit 2.2s ease-out infinite;
+}
+.offer-card {
+  margin-top:14px;
+  padding:20px;
+  border:1px solid #cfd6f5;
+  border-radius:22px;
+  background:linear-gradient(180deg,#fff 0%,#fafbff 100%);
+  box-shadow:0 14px 34px rgba(36,70,245,.08);
+}
+.offer-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+}
+.offer-earnings {
+  margin:2px 0 2px;
+  font:800 44px/.98 var(--porter-font-display);
+  letter-spacing:-.05em;
+  color:var(--porter-navy);
+}
+.offer-countdown {
+  width:76px;
+  height:76px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  border-radius:50%;
+  border:4px solid var(--porter-cyan);
+  background:var(--porter-navy);
+  color:#fff;
+  box-shadow:0 0 0 6px rgba(19,199,207,.08);
+}
+.offer-countdown strong { font:800 21px/1 var(--porter-font-display); }
+.offer-countdown small { color:#a9e9ed;font-size:9px; }
+.offer-route {
+  display:grid;
+  gap:12px;
+  margin:18px 0 12px;
+  padding:14px;
+  border-radius:16px;
+  background:#f7f8fd;
+}
+.offer-route>div { display:flex;gap:10px;align-items:flex-start; }
+.offer-route p { margin:0;display:grid;gap:1px; }
+.offer-route small { color:var(--porter-muted);font-size:9px;text-transform:uppercase;letter-spacing:.07em; }
+.route-dot { width:11px;height:11px;margin-top:5px;border-radius:50%;background:var(--porter-blue);box-shadow:0 0 0 4px rgba(36,70,245,.08); }
+.route-dot.dropoff { background:var(--porter-cyan);box-shadow:0 0 0 4px rgba(19,199,207,.10); }
+.offer-meta { display:flex;gap:8px;flex-wrap:wrap; }
+.offer-meta span {
+  padding:6px 9px;
+  border-radius:999px;
+  background:var(--porter-blue-soft);
+  color:var(--porter-blue);
+  font-size:10px;
+  font-weight:750;
+}
+.offer-actions {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  margin-top:16px;
+}
+.offer-actions .primary { min-height:56px; }
+
+/* Admin KPI density */
+.admin-kpi-grid { grid-template-columns:repeat(6,minmax(0,1fr)); }
+.admin-kpi-grid .kpi-card { min-width:0; }
+.admin-kpi-grid .metric {
+  font-size:clamp(20px,2vw,28px);
+  white-space:nowrap;
+}
+
+@keyframes porter-orbit {
+  0% { transform:scale(.75);opacity:.75; }
+  100% { transform:scale(1.35);opacity:0; }
+}
+
+@media(max-width:1180px) {
+  .admin-kpi-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media(max-width:760px) {
+  .dispute-entry { display:grid; }
+  .dispute-button { width:100%; }
+  .offer-actions { grid-template-columns:1fr; }
+  .admin-kpi-grid { grid-template-columns:1fr 1fr; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .live-orbit::after { animation:none!important; }
+}
