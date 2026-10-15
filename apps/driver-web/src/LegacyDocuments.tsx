@@ -3,7 +3,7 @@ import { useSession, uploadFile, DocumentLink } from '@porter/app-session';
 import { StatusBadge } from '@porter/ui';
 import { useMockPlatform } from '@porter/mock-platform';
 import { DocumentType, VehicleClass } from '@porter/shared';
-import { driverName, date } from '../../customer-web/src/pages/JobDetail';
+import { driverName, date } from '@porter/marketplace-ui';
 export function LegacyDocuments({ driverId, run }: { driverId: string; run: (f: () => void) => void }) {
  const p = useMockPlatform(); const session=useSession(); const d = p.drivers.find(d => d.id === driverId)!; const v = p.vehicles.find(v => v.driverId === driverId);
  const [name,setName] = useState(d.name ?? driverName(driverId)); const [phone,setPhone] = useState(d.phone ?? (session ? '' : '0412 345 678')); const [abn,setAbn] = useState(d.abn ?? (session ? '' : '51824753556')); const [identity,setIdentity] = useState(d.identityNumber ?? (session ? '' : 'DEMO-ID-001')); const [make,setMake] = useState(v?.make ?? ''); const [model,setModel] = useState(v?.model ?? ''); const [plate,setPlate] = useState(v?.plate ?? ''); const [type,setType] = useState(v?.type ?? VehicleClass.BIKE_OR_CAR); const [terms,setTerms] = useState(d.termsAccepted ?? false); const [message,setMessage] = useState('');

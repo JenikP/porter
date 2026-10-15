@@ -1,0 +1,22 @@
+{
+  "name": "@porter/marketplace-ui",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@porter/ui": "*",
+    "@porter/shared": "*",
+    "@porter/domain": "*",
+    "@porter/mock-platform": "*",
+    "@porter/app-session": "*"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-router-dom": "^6.23.1"
+  }
+}

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useMockPlatform } from '@porter/mock-platform';
 import { JobStatus, DisputeReason, type Job } from '@porter/shared';
 import { getStatusDisplayInfo } from '@porter/domain';
-import { money } from '../../customer-web/src/pages/JobDetail';
+import { money } from '@porter/marketplace-ui';
 import { Icon, DeliveryProgress } from '@porter/ui';
 const proofImage = (label: string) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="380"><rect width="600" height="380" fill="#e4ecde"/><rect x="90" y="50" width="420" height="250" rx="10" fill="#faf9f1"/><path d="M180 150h240v120H180z" fill="#bd9d70"/><path d="M180 150l120-65 120 65-120 60z" fill="#d8ba8b"/><path d="M300 210v60" stroke="#957a54" stroke-width="4"/><text x="300" y="340" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#244b39">${label} · simulated photo</text></svg>`);
 export function ActiveJob({ job, run }: { job: Job; run: (f: () => void) => void }) {

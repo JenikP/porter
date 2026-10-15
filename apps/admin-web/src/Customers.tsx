@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMockPlatform } from '@porter/mock-platform';
-import { money,date } from '../../customer-web/src/pages/JobDetail';
+import { money,date } from '@porter/marketplace-ui';
 export function Customers({ run }: { run:(f:()=>void)=>void }) {
  const p = useMockPlatform(); const [search,setSearch] = useState(''); const [id,setId] = useState(p.customers[0]?.id ?? ''); const c = p.customers.find(c => c.id === id); const [flag,setFlag] = useState('');
  const customers = p.customers.filter(c => [c.id,c.name,c.businessName,c.email].join(' ').toLowerCase().includes(search.toLowerCase()));

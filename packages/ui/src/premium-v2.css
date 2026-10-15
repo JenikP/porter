@@ -1230,3 +1230,7 @@ input[type=file]::file-selector-button {
     padding-bottom:9px;
   }
 }
+/* Keep booking controls within the current mobile content inset. */
+@media(max-width:760px){.booking .booking-actions{margin-left:0;margin-right:0}.booking .booking-actions button{min-width:0;width:100%}}
+@media(max-width:760px){.driver-page .driver-hero{margin-left:0;margin-right:0}}
+@media(max-width:760px){.admin-page .overview-charts{grid-template-columns:minmax(0,1fr)}.overview-charts .section-heading{flex-wrap:wrap}}

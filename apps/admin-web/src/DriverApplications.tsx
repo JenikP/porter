@@ -3,7 +3,7 @@ import {useSession,DocumentLink} from '@porter/app-session';
 import {useMockPlatform} from '@porter/mock-platform';
 import {DocumentStatus,REQUIRED_DRIVER_DOCUMENTS,driverApplicationErrors,type DriverDocument} from '@porter/shared';
 import {StatusBadge} from '@porter/ui';
-import {money} from '../../customer-web/src/pages/JobDetail';
+import {money} from '@porter/marketplace-ui';
 export function DriverApplications({run}:{run:(f:()=>void)=>void}){
  const session=useSession()!,p=useMockPlatform(),[selected,setSelected]=useState(''),[search,setSearch]=useState(''),[filter,setFilter]=useState('ALL'),[reason,setReason]=useState('');const manager=session.user.role==='MANAGER_ADMIN';
  const status=(d:typeof p.drivers[number])=>d.isSuspended?'SUSPENDED':d.applicationStatus??(d.approvalStatus==='APPROVED'?'APPROVED':'DRAFT');

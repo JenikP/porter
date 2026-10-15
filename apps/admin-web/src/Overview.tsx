@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMockPlatform } from '@porter/mock-platform';
 import { JobStatus, DisputeStatus } from '@porter/shared';
 import { Icon, StatusBadge } from '@porter/ui';
-import { done, money, driverName } from '../../customer-web/src/pages/JobDetail';
+import { done, money, driverName } from '@porter/marketplace-ui';
 
 export function Overview({onJobs}:{onJobs:()=>void}) {
  const p=useMockPlatform();

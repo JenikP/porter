@@ -1,6 +1,6 @@
 import { useMockPlatform } from '@porter/mock-platform';
 import { JobStatus, OfferStatus } from '@porter/shared';
-import { money } from '../../customer-web/src/pages/JobDetail';
+import { money } from '@porter/marketplace-ui';
 
 const area = (address: string) => address.split(',').slice(1).join(',').replace(/VIC\s*\d+/, '').trim() || 'Melbourne';
 
