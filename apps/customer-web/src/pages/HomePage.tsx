@@ -32,14 +32,14 @@ export function HomePage() {
       </section>
       <section className="panel active-delivery"><div className="section-heading"><h2>{activeJob ? 'Live delivery' : 'Your deliveries'}</h2>{activeJob && <StatusBadge status={activeJob.status} size="sm"/>}</div>
         {activeJob ? <>
-          <div className="driver-summary"><span className="avatar">{driver ? (driver.name ?? 'Sam Nguyen').split(' ').map(n=>n[0]).slice(0,2).join('') : <Icon name="search"/>}</span><div><b>{driver?.name ?? 'Finding your driver'}</b><small>{driver ? `★ ${driver.rating.toFixed(2)} · Driver assigned` : 'Matching eligible Melbourne drivers'}</small></div><strong>$${activeJob.price.toFixed(2)}</strong></div>
+          <div className="driver-summary"><span className="avatar">{driver ? (driver.name ?? 'Sam Nguyen').split(' ').map(n=>n[0]).slice(0,2).join('') : <Icon name="search"/>}</span><div><b>{driver?.name ?? 'Finding your driver'}</b><small>{driver ? `★ ${driver.rating.toFixed(2)} · Driver assigned` : 'Matching eligible Melbourne drivers'}</small></div><strong>${activeJob.price.toFixed(2)}</strong></div>
           <div className="route-stops"><p>{activeJob.pickupAddress}</p><p>{activeJob.dropoffAddress}</p></div>
           <Button className="forest-button" fullWidth onClick={() => navigate(`/jobs/${activeJob.id}`)}>Track delivery <Icon name="arrow"/></Button>
         </> : <><p className="muted">Nothing is moving right now.</p><Button variant="secondary" onClick={book}>Start a delivery</Button></>}
       </section>
       <section className="panel recent-deliveries"><div className="section-heading"><h2>Recent deliveries</h2><button className="text-action" onClick={()=>navigate('/jobs')}>View all <Icon name="chevron" size={16}/></button></div>
         {recentJobs.length ? recentJobs.map(job => <div className="home-row" key={job.id}>
-          <div><p>{job.pickupAddress.split(',')[0]} → {job.dropoffAddress.split(',')[0]}</p><small>Completed · $${job.price.toFixed(2)} · {job.estimatedDistanceKm ?? '—'} km</small></div>
+          <div><p>{job.pickupAddress.split(',')[0]} → {job.dropoffAddress.split(',')[0]}</p><small>Completed · ${job.price.toFixed(2)} · {job.estimatedDistanceKm ?? '—'} km</small></div>
           <Button variant="secondary" size="sm" onClick={() => navigate(`/jobs/${job.id}`)}>View delivery</Button>
         </div>) : <p className="muted">Your completed deliveries will appear here.</p>}
       </section>
